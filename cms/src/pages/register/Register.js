@@ -52,7 +52,7 @@ const Register = (props) => {
                 <p className="auth-header mb-0">Sign Up</p>
                 <div className="logo-block">
                   <SofiaLogo />
-                  <p className="mb-0">[Cửa hàng Nội thất] CMS</p>
+                  <p className="mb-0">[Movie] CMS</p>
                 </div>
               </div>
               <form onSubmit={(event => doRegister(event))}>

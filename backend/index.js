@@ -1,5 +1,5 @@
 const express = require("express");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const cors = require("cors");
 const env = require("dotenv").config();
 const port = process.env.PORT || 7000;
@@ -7,10 +7,7 @@ const port = process.env.PORT || 7000;
 const app = express();
 
 app.use(
-    cors({
-        origin: ["https://asho-dekhi.vercel.app", "http://127.0.0.1:5173"],
-        methods: ["POST", "GET"],
-    })
+    cors()
 );
 
 app.use(express.json());
