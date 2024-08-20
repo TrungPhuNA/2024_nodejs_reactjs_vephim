@@ -1,0 +1,38 @@
+.ant-form label {
+	font-size: 15px !important;
+	font-weight: 600 !important;
+}
+.ant-form-item.d-block {
+	.ant-row.ant-form-item-row {
+		display: block !important;
+	}
+}
+
+.cursor-pointer {
+	cursor: pointer;
+	
+}
+
+.review {
+	.star {
+		font-size: 18px;
+		color: #aeaead;
+	}
+
+	.star.active {
+		color: #ffa600;
+	}
+	.btn {
+		&:hover {
+			border: 1px solid #8d703b;
+			background: #fff;
+		}
+		&.active {
+			border: 1px solid #8d703b;
+			background: #fff;
+		}
+	}
+}
+.ck-editor__editable {
+	min-height: 400px;
+}
