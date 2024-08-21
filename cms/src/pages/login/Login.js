@@ -41,10 +41,10 @@ const Login = ( props ) =>
 		console.log(response);
 		if(response?.status == 'success') {
 			localStorage.setItem('access_token_cms', response?.data?.token_info?.access_token);
-			localStorage.setItem('full_name', response?.data?.user?.name);
+			localStorage.setItem('full_name', response?.data?.user?.first_name);
 			localStorage.setItem('email', response?.data?.user?.email);
 			localStorage.setItem('phone', response?.data?.user?.phone);
-			localStorage.setItem('avatar', response?.data?.user?.avatar);
+			localStorage.setItem('type', response?.data?.user?.person_type);
 			window.location.href = '/';
 		} else {
 			message.error(response?.message || 'error');
@@ -73,7 +73,7 @@ const Login = ( props ) =>
 								validateMessages={ VALIDATE_FORM }
 							>
 								<div className='mb-3 form-group'>
-									<Form.Item name="username" label="Email"
+									<Form.Item name="email" label="Email"
 										rules={ [ { required: true } ] }
 										className=' d-block'>
 										<Input className='form-control' style={ { height: '40px', borderRadius: '10px' } } placeholder='Nhập email' />

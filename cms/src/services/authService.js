@@ -9,7 +9,7 @@ export const AUTH_SERVICE = {
 	{
 		try
 		{
-			const response = await postMethod( '/auth/login', data );
+			const response = await postMethod( '/admin/login', data );
 			await timeDelay( 500 );
 			return response;
 		} catch ( error )

@@ -49,6 +49,10 @@ handleDisconnect();
 app.get("/", (req, res) => {
     return res.json("Hello Backend Side");
 });
+var initRouterAdmin = require('./routes/admin/index');
+
+app.use('/api/v1/admin', initRouterAdmin);
+
 
 // /////
 // HOME

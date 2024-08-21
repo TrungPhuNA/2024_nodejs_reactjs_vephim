@@ -61,11 +61,11 @@ const AdminPage = () => {
                     {!loading && movieData}
                 </div>
             </section> */}
-            <AdminShowtimesAddSection
+            {/* <AdminShowtimesAddSection
                 selectedShowDate={selectedShowDate}
                 setSelectedShowDate={setSelectedShowDate}
                 handleSelectedDate={handleSelectedDate}
-            />
+            /> */}
             <AdminShownInModifySection selectedDate={selectedShowDate}/>
             <Footer/>
         </>
