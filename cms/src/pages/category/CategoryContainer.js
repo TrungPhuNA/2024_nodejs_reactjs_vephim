@@ -29,14 +29,16 @@ export const CategoryContainer = () =>
 		dispatch( toggleShowLoading( true ) );
 		const rs = await getCategoriesByFilter( filter, dispatch );
 		await timeDelay( 1500 );
-
+		
 		dispatch( toggleShowLoading( false ) );
 		if ( rs )
 		{
+			console.log(rs);
 			setDatas( rs.categories );
 			setPaging( rs.meta );
 		}
 	}
+	console.log(datas);
 
 	const routes = [
 		{

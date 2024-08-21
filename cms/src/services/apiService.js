@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getItem } from './common';
+import { getItem, timeDelay } from './common';
 import axios  from 'axios';
 
 const headers = {

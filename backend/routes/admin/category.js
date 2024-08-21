@@ -1,69 +1,21 @@
 
 
-const jwt = require( 'jsonwebtoken' );
-const promisify = require( 'util' ).promisify;
-const sign = promisify( jwt.sign ).bind( jwt );
+var express = require('express');
+var router = express.Router();
+const authBuilder = require('../../app/controllers/category');
+const movie = require('../../app/controllers/movie');
+const user = require('../../app/controllers/user');
+const authMiddleware = require('./../../app/common/adminAuthjwt');
 
-exports.login = async ( req, res ) =>
-{
-	try
-	{
-		const email = req.body.email.toLowerCase();
-		const user = await User.findOne( { email: email } );
-		if ( !user ) return res.status( 200 ).json( { message: 'Tài khoản không tồn tại', status: 400 } );
+const isAuth = authMiddleware.roleGuards;
+router.get('/category',isAuth, authBuilder.getAll);
 
-		const isPasswordValid = bcrypt.compareSync( req.body.password, user.password );
-		if ( !isPasswordValid )
-		{
-			return res.status( 200 ).json( { message: 'Mật khẩu không chính xác', status: 400 } );
-		}
+router.get('/movie',isAuth, movie.getAll);
+router.get('/movie/show/:id',isAuth, movie.show);
 
-		const accessTokenLife = process.env.ACCESS_TOKEN_LIFE;
-		const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+router.get('/user',isAuth, user.getAll);
+router.get('/user/show/:id',isAuth, user.show);
+router.put('/user/update/:id',isAuth, user.update);
+router.post('/user/store',isAuth, user.create);
+module.exports = router;
 
-		const dataForAccessToken = {
-			email: user.email,
-		};
-		const accessToken = await this.generateToken(
-			dataForAccessToken,
-			accessTokenSecret,
-			accessTokenLife,
-		);
-		if ( !accessToken )
-		{
-			return res
-				.status( 401 )
-				.send( { message: 'Đăng nhập không thành công, vui lòng thử lại.' } );
-		}
-		const response = {
-			accessToken: accessToken,
-			user: user
-		}
-		return res.status( 200 ).json( { data: response, status: 200 } );
-	} catch ( e )
-	{
-		res.status( 404 )
-		res.send( { message: e?.message } )
-	}
-};
-
-exports.generateToken = async ( payload, secretSignature, tokenLife ) =>
-	{
-		try
-		{
-			return await sign(
-				{
-					payload,
-				},
-				secretSignature,
-				{
-					algorithm: 'HS256',
-					expiresIn: tokenLife,
-				},
-			);
-		} catch ( error )
-		{
-			console.log( `Error in generate access token:  + ${ error }` );
-			return null;
-		}
-	};

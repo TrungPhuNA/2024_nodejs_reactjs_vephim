@@ -7,3 +7,11 @@ exports.buildResponse = ( res, response ) =>
 {
 	return res.status( 200 ).json( { status: "success", data: response, message: "successfully!" } )
 }
+
+exports.buildParamPaging = ( queryParam ) =>
+	{
+		return {
+			page: queryParam?.page || 1,
+			page_size: queryParam?.page_size || 10,
+		}
+	}

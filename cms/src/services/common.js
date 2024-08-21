@@ -94,12 +94,7 @@ export const RESPONSE_API = async ( response, message, id = null, history, route
 
 export const buildImage = ( img, is_user = false ) =>
 {
-	if ( img )
-	{
-		return process.env.REACT_APP_URL_UPLOAD + "/upload/" + img;
-
-	}
-	else return is_user ? DEFAULT_USER : DEFAUT_IMG;
+	return img ? img : (is_user ? DEFAULT_USER : DEFAUT_IMG);
 }
 
 export const onErrorImage = ( e ) =>

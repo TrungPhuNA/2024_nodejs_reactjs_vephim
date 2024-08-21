@@ -36,6 +36,7 @@ const Sidebar = ( props ) =>
 
 	const genSideBar = () =>
 	{
+		let path_name = window.location?.pathname;
 		return SIDE_BARS.map( ( item, key ) =>
 		{
 			if ( item.children?.length > 0 )

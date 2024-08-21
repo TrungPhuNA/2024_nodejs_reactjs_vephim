@@ -13,15 +13,15 @@ export const CategorySearch = ( props ) =>
 
 	useEffect( () =>
 	{
-		setStatus( [
-			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
-		] );
+		// setStatus( [
+		// 	{ value: 1, label: "Active" },
+		// 	{ value: -1, label: "Inactive" }
+		// ] );
 
-		setHot( [
-			{ value: 1, label: "Hot" },
-			{ value: -1, label: "Not hot" }
-		] );
+		// setHot( [
+		// 	{ value: 1, label: "Hot" },
+		// 	{ value: -1, label: "Not hot" }
+		// ] );
 	}, [] )
 
 
@@ -58,17 +58,17 @@ export const CategorySearch = ( props ) =>
 			onFinish={ submitForm }
 		>
 			<div className="row mb-1">
-				<div className="col-md-3 mb-2 form-group">
+				{/* <div className="col-md-3 mb-2 form-group">
 					<Form.Item name="id" label="Id" className='mb-0 d-block'>
 						<Input className='form-control' placeholder='Nhập Id' />
 					</Form.Item>
-				</div>
+				</div> */}
 				<div className="col-md-3 mb-2 form-group">
 					<Form.Item name="name" label="Tên" className='mb-0 d-block'>
 						<Input className='form-control' placeholder='Nhập tên' />
 					</Form.Item>
 				</div>
-				<div className="col-md-3 mb-2">
+				{/* <div className="col-md-3 mb-2">
 					<Form.Item name="status" label="Trạng thái" className='mb-0 d-block'>
 						<Select
 							placeholder="Chọn trạng thái"
@@ -76,7 +76,7 @@ export const CategorySearch = ( props ) =>
 							options={ status }
 						/>
 					</Form.Item>
-				</div>
+				</div> */}
 				{/* <div className="col-md-3 mb-2">
 					<Form.Item name="hot" label="Hot" className='mb-0 d-block'>
 						<Select

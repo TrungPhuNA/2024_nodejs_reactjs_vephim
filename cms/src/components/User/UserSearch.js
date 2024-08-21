@@ -19,17 +19,29 @@ export const UserSearch = ( props ) =>
 		] );
 
 		setType( [
-			{ value: 1, label: "ADM" },
-			{ value: 2, label: "CUSTOMER" }
+			{ value: "ADMIN", label: "ADMIN" },
+			{ value: "CUSTOMER", label: "CUSTOMER" }
 		] );
 	}, [] )
 
 
 	const submitForm = ( value ) =>
 	{
-		if ( value.name )
+		if ( value.first_name )
 		{
-			value.name = value.name.trim();
+			value.first_name = value.first_name.trim();
+		}
+		if ( value.last_name )
+		{
+			value.last_name = value.last_name.trim();
+		}
+		if ( value.email )
+		{
+			value.email = value.email.trim();
+		}
+		if ( value.phone_number )
+		{
+			value.phone_number = value.phone_number.trim();
 		}
 		if ( value.id )
 		{
@@ -44,10 +56,11 @@ export const UserSearch = ( props ) =>
 		props.getListData( { page: 1, page_size: props?.paging?.page_size } );
 		props.setParams( {
 			id: null,
-			name: null,
-			category_id: null,
-			status: null,
-			hot: null
+			first_name: null,
+			last_name: null,
+			email: null,
+			phone_number: null,
+			person_type: null
 		} );
 		form.resetFields();
 	}
@@ -64,28 +77,30 @@ export const UserSearch = ( props ) =>
 					</Form.Item>
 				</div>
 				<div className="col-md-3 mb-2 form-group">
-					<Form.Item name="name" label="Tên người dùng" className='mb-0 d-block'>
-						<Input className='form-control' placeholder='Nhập tên người dùng' />
+					<Form.Item name="first_name" label="First Name" className='mb-0 d-block'>
+						<Input className='form-control' placeholder='Nhập giá trị' />
 					</Form.Item>
 				</div>
+				<div className="col-md-3 mb-2 form-group">
+					<Form.Item name="last_name" label="Last Name" className='mb-0 d-block'>
+						<Input className='form-control' placeholder='Nhập giá trị' />
+					</Form.Item>
+				</div>
+				<div className="col-md-3 mb-2 form-group">
+					<Form.Item name="phone_number" label="Số điện thoại" className='mb-0 d-block'>
+						<Input className='form-control' placeholder='Nhập giá trị' />
+					</Form.Item>
+				</div>
+				
 				<div className="col-md-3 mb-2">
-					<Form.Item name="status" label="Trạng thái" className='mb-0 d-block'>
-						<Select
-							placeholder="Chọn trạng thái"
-							style={ { width: '100%' } }
-							options={ status }
-						/>
-					</Form.Item>
-				</div>
-				 <div className="col-md-3 mb-2">
-					<Form.Item name="type" label="Loại tài khoản" className='mb-0 d-block'>
+					<Form.Item name="person_type" label="Loại tài khoản" className='mb-0 d-block'>
 						<Select
 							placeholder="Chọn loại tài khoản"
 							style={ { width: '100%' } }
 							options={ type }
 						/>
 					</Form.Item>
-				</div> 
+				</div>
 			</div>
 
 			<button type="submit" className="btn btn-primary" style={ { marginRight: 10, padding: '10px 10px' } }>

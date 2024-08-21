@@ -12,7 +12,7 @@ export const USER_SERVICE = {
 		{
 			let filter = buildFilter( params );
 			dispatch( toggleShowLoading( true ) );
-			const response = await getMethod( '/admin/user', filter );;
+			const response = await getMethod( '/api/v1/admin/user', filter );;
 			await timeDelay( 500 );
 			dispatch( toggleShowLoading( false ) );
 			if ( response?.status === 'success' )
@@ -32,7 +32,7 @@ export const USER_SERVICE = {
 		try
 		{
 			dispatch( toggleShowLoading( true ) );
-			const response = await getMethod( `/admin/user/show/${ id }` );
+			const response = await getMethod( `/api/v1/admin/user/show/${ id }` );
 			await timeDelay( 1000 );
 			dispatch( toggleShowLoading( false ) );
 			if ( response?.status === 'success' )
@@ -48,17 +48,17 @@ export const USER_SERVICE = {
 	},
 	async create ( data )
 	{
-		return await postMethod( `/admin/user/store`, data );
+		return await postMethod( `/api/v1/admin/user/store`, data );
 	},
 
 	async update ( id, data )
 	{
-		return await putMethod( `/admin/user/update/${ id }`, data );
+		return await putMethod( `/api/v1/admin/user/update/${ id }`, data );
 	},
 
 	async delete ( id )
 	{
-		return await deleteMethod( `/admin/user/delete/${ id }` );
+		return await deleteMethod( `/api/v1/admin/user/delete/${ id }` );
 	}
 }
 export const submitFormUser = async ( id = null, files, e, dispatch, history ) =>

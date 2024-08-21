@@ -13,15 +13,7 @@ export const ProductSearch = ( props ) =>
 
 	useEffect( () =>
 	{
-		setStatus( [
-			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
-		] );
-
-		setHot( [
-			{ value: 1, label: "Hot" },
-			{ value: -1, label: "Not hot" }
-		] );
+		
 	}, [] )
 
 
@@ -66,33 +58,13 @@ export const ProductSearch = ( props ) =>
 					</Form.Item>
 				</div> */}
 				<div className="col-md-3 mb-2 form-group">
-					<Form.Item name="name" label="Tên sản phẩm" className='mb-0 d-block'>
-						<Input className='form-control' placeholder='Nhập tên sản phẩm' />
+					<Form.Item name="name" label="Tên phim" className='mb-0 d-block'>
+						<Input className='form-control' placeholder='Nhập tên phim' />
 					</Form.Item>
 				</div>
-				<div className="col-md-3 mb-2 form-group">
-					<Form.Item name="quantity" label="Số lượng sản phẩm" className='mb-0 d-block'>
-						<Input className='form-control' placeholder='Nhập số lượng sản phẩm' />
-					</Form.Item>
-				</div>
-				<div className="col-md-3 mb-2">
-					<Form.Item name="status" label="Trạng thái" className='mb-0 d-block'>
-						<Select
-							placeholder="Chọn trạng thái"
-							style={ { width: '100%' } }
-							options={ status }
-						/>
-					</Form.Item>
-				</div>
-				<div className="col-md-3 mb-2">
-					<Form.Item name="hot" label="Hot" className='mb-0 d-block'>
-						<Select
-							placeholder="Chọn trạng thái hot"
-							style={ { width: '100%' } }
-							options={ hot }
-						/>
-					</Form.Item>
-				</div>
+				
+				
+				
 			</div>
 
 			<button type="submit" className="btn btn-primary" style={ { marginRight: 10, padding: '10px 10px' } }>

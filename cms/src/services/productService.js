@@ -8,33 +8,33 @@ import uploadApi from "./upload";
 export const getProducts = async ( params ) =>
 {
 	let filter = buildFilter( params );
-	return await getMethod( '/admin/product', filter );
+	return await getMethod( '/api/v1/admin/movie', filter );
 }
 
 export const showProduct = async ( id, params ) =>
 {
-	return await getMethod( `/admin/product/show/${ id }`, params );
+	return await getMethod( `/api/v1/admin/movie/show/${ id }`, params );
 }
 
 export const Product = {
 	async create ( data )
 	{
-		return await postMethod( `/admin/product/store`, data );
+		return await postMethod( `/api/v1/admin/movie/store`, data );
 	},
 
 	async update ( id, data )
 	{
-		return await putMethod( `/admin/product/update/${ id }`, data );
+		return await putMethod( `/api/v1/admin/movie/update/${ id }`, data );
 	},
 
 	async updateStatus ( id, data )
 	{
-		return await putMethod( `/admin/product/update/status/${ id }`, data );
+		return await putMethod( `/api/v1/admin/movie/update/status/${ id }`, data );
 	},
 
 	async delete ( id )
 	{
-		return await deleteMethod( `/admin/product/delete/${ id }` );
+		return await deleteMethod( `/api/v1/admin/movie/delete/${ id }` );
 	}
 }
 

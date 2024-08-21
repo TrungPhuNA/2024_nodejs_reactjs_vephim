@@ -99,7 +99,7 @@ const Dashboard = () =>
 						<Widget className="widget-p-sm bg-warning text-white">
 							<div className={ s.smallWidget }>
 								<div className="d-md-flex align-items-center justify-content-md-between">
-									<p className="headline-2">Sản phẩm</p>
+									<p className="headline-2">Phim</p>
 									<p className="headline-2"> { data?.total_product || 0 } <i className="eva eva-list ml-2"></i></p>
 								</div>
 							</div>
@@ -109,7 +109,7 @@ const Dashboard = () =>
 						<Widget className="widget-p-sm bg-success text-white">
 							<div className={ s.smallWidget }>
 								<div className="d-md-flex align-items-center justify-content-md-between">
-									<p className="headline-2">Đơn hàng</p>
+									<p className="headline-2">Số lượng vé đã đặt</p>
 									<p className="headline-2"> { data?.total_order || 0 } <i className="eva eva-layers ml-2"></i></p>
 								</div>
 							</div>
@@ -136,11 +136,11 @@ const Dashboard = () =>
 						</div>
 						<Row className="gutter mb-4">
 							<Col className="mb-4 mb-md-0" xs={ 12 } md={ 6 }>
-								<h2 className="headline-2">Trạng thái đơn hàng</h2>
+								<h2 className="headline-2">Đặt vé</h2>
 								<PipeChartApex className="pb-4" data={ data?.group_status } />
 							</Col>
 							<Col className="my-4 pr-0 mb-md-0" xs={ 12 } md={ 12 }>
-								<h2 className="headline-2 mb-3">Doanh số</h2>
+								<h2 className="headline-2 mb-3">Số lượng vé</h2>
 
 								<ApexLineChart className="pb-4" month={ month } isCheck={ isCheck } listDates={ dataDate } data={ dataRevenue } />
 							</Col>

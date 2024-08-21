@@ -36,7 +36,7 @@ export const Products = ( props ) =>
 			<Widget>
 				<div className="p-5">
 					<div className="mb-3">
-						<Link to="/product/create" className="btn btn-info">
+						<Link to="/movie/create" className="btn btn-info">
 							<span className="d-flex align-items-center"><i className="eva eva-plus mr-2"></i> Thêm mới</span>
 						</Link>
 					</div>
@@ -52,14 +52,16 @@ export const Products = ( props ) =>
 						<Table className={ `table-striped table-bordered table-hover ${ s.statesTable }` } responsive>
 							<thead>
 								<tr>
-									<th>#</th>
+									<th className="text-center">#</th>
 									<th className="text-nowrap">Hình ảnh</th>
-									<th className="text-nowrap">Sản phẩm</th>
-									<th className="text-nowrap">Số lượng</th>
-									<th className="text-nowrap">Giá</th>
-									<th className="text-nowrap">Phân loại</th>
-									<th className="text-nowrap">Trạng thái</th>
-									<th className="text-nowrap">Thời gian tạo</th>
+									<th className="text-nowrap">Phim</th>
+									<th className="text-nowrap">Ngôn ngữ</th>
+									<th className="text-nowrap">Tóm tắt</th>
+									<th className="text-nowrap">Rating</th>
+									<th className="text-nowrap">Danh mục</th>
+									<th className="text-nowrap">Thời lượng</th>
+									<th className="text-nowrap">Top Cast</th>
+									<th className="text-nowrap">Ngày chiếu</th>
 									<th className="text-nowrap">Thao tác</th>
 								</tr>
 							</thead>
@@ -73,29 +75,40 @@ export const Products = ( props ) =>
 												<td className="d-flex align-items-center">
 													<img width="70" height="70"
 														style={ { border: "0.5px solid gray", borderRadius: '5px' } }
-														src={ buildImage( item.avatar ) } alt={ item.name } onError={ onErrorImage } />
+														src={ buildImage( item.image_path ) }
+														alt={ item.name } onError={ onErrorImage } />
 												</td>
 												<td className="text-gray-900">
-													<div className="d-flex">
-														<div className="font-weight-bold " style={ { minWidth: "80px" } }>Tên Sp: { item.hot == 1 ? <span className="text-danger">Hot</span> : '' }</div>
-														<div className="ml-2 text-break" style={ { minWidth: '100px' } }>{ item.name }</div>
-													</div>
-													<div className="d-flex my-2">
-														<div className="font-weight-bold" style={ { minWidth: "80px" } }>slug:</div>
-														<div className="ml-2 text-break" style={ { minWidth: '100px' } }>{ item.slug }</div>
+													<div className="font-weight-bold " style={ { minWidth: "80px" } }>
+														{ item?.name }
 													</div>
 												</td>
-												<td className="text-gray-900">{ customNumber( item.number, '.', '' ) }</td>
-												<td className="text-gray-900">{ customNumber( item.price, '.', 'đ' ) }</td>
-												<td className="text-gray-900 text-break" style={ { minWidth: "100px" } }>{ item.category?.name || 'N/A' }</td>
+												<td className="text-gray-900">{ item?.language }</td>
+												<td className="text-gray-900 text-break" >
+													<p style={ { minWidth: "200px" } }>
+														{ item?.synopsis }
+													</p>
+												</td>
+												<td className="text-gray-900">{ item?.rating }</td>
 
-												<td className="text-gray-900">{ genStatus( item.status ) }</td>
+												<td className="text-gray-900 text-break">
+													<p style={ { minWidth: "200px" } }>
+														{ item?.genres }
+													</p>
+												</td>
+
+												<td className="text-gray-900">{ item?.duration }</td>
+												<td className="text-gray-900 text-break">
+													<p style={ { minWidth: "200px" } }>
+														{ item?.top_cast }
+													</p>
+												</td>
 												<td className="text-gray-900 text-nowrap">
-													{ customDate( item.created_at, 'DD/MM/yyyy' ) }
+													{ customDate( item.release_date, 'DD/MM/yyyy HH:mm:ss' ) }
 												</td>
 												<td>
 													<div className="d-flex justify-content-center align-items-center">
-														<Link to={ `/product/edit/${ item.id }` } className="d-flex justify-content-center">
+														<Link to={ `/movie/edit/${ item.id }` } className="d-flex justify-content-center">
 															<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
 														</Link>
 														<DeleteOutlined
@@ -105,23 +118,8 @@ export const Products = ( props ) =>
 																props.deleteById( item.id );
 															} }
 															style={ { fontSize: "16px", color: "red" } } />
-															
-														{/* {
-															item.status == 1 ?
-																<LockOutlined className="ml-3 cursor-pointer"
-																	style={ { fontSize: "16px", color: "red" } }
-																	onClick={ () =>
-																	{
-																		props.updateStatus( item );
-																	} } />
-																:
-																<UnlockOutlined className="ml-3 cursor-pointer text-success"
-																	style={ { fontSize: "16px" } }
-																	onClick={ () =>
-																	{
-																		props.updateStatus( item );
-																	} } />
-														} */}
+
+														
 													</div>
 												</td>
 											</tr>
@@ -132,7 +130,7 @@ export const Products = ( props ) =>
 								{
 									( !props.products || props.products?.length <= 0 ) &&
 									<tr>
-										<td colSpan={ 9 } style={ { textAlign: "center", backgroundColor: '#ffff' } }>
+										<td colSpan={ 11 } style={ { textAlign: "center", backgroundColor: '#ffff' } }>
 											<img className="text-center" src={ EMPTY_IMG } style={ { width: "300px", height: "300px" } } />
 											<div style={ { color: "#9A9A9A" } }>Dữ liệu trống</div>
 										</td>

@@ -27,15 +27,17 @@ export const Categories = ( props ) =>
 			default: return <div className="text-warning">Inactive</div>
 		}
 	}
+
+	console.log( "props========? ", props );
 	return (
 		<>
 			<Widget>
 				<div className="p-5">
-					<div className="mb-3">
+					{/* <div className="mb-3">
 						<Link to="/category/create" className="btn btn-info">
 							<span className="d-flex align-items-center"><i className="eva eva-plus mr-2"></i> Thêm mới</span>
 						</Link>
-					</div>
+					</div> */}
 					<CategorySearch { ...props } />
 				</div>
 			</Widget >
@@ -44,14 +46,12 @@ export const Categories = ( props ) =>
 					<Table className={ `table-striped table-bordered table-hover ${ s.statesTable }` } responsive>
 						<thead>
 							<tr>
-								<th>#</th>
-								<th className="text-nowrap">Hình ảnh</th>
+								<th className="text-center">#</th>
 								<th className="text-nowrap">Tên phân loại</th>
-								<th className="text-nowrap">Slug</th>
-								{/* <th className="text-nowrap">Hot</th> */ }
+								{/* <th className="text-nowrap">Slug</th>
 								<th className="text-nowrap">Trạng thái</th>
-								<th className="text-nowrap">Thời gian tạo</th>
-								<th className="text-nowrap text-center">Thao tác</th>
+								<th className="text-nowrap">Thời gian tạo</th> */}
+								{/* <th className="text-nowrap text-center">Thao tác</th> */}
 							</tr>
 						</thead>
 						<tbody>
@@ -61,39 +61,24 @@ export const Categories = ( props ) =>
 									return (
 										< tr key={ key } className="table-product">
 											<td className="text-gray-900 text-center">{ ( props.paging.page - 1 ) * props.paging.page_size + ( key + 1 ) }</td>
-											<td className="d-flex align-items-center">
+											{/* <td className="d-flex align-items-center">
 												<img width="70" height="70"
 													id={ key }
 													style={ { border: "0.5px solid gray", borderRadius: '5px' } }
 													src={ buildImage( item.avatar ) } alt={ item.name } onError={ onErrorImage } />
-											</td>
-											<td className="text-gray-900">
-												<span className="text-break" style={ { minWidth: '100px' } }>{ item.name }</span>
-											</td>
-											<td className="text-gray-900">
-												<span className="text-break" style={ { minWidth: '100px' } }>{ item.slug }</span>
-											</td>
-											{/* <td className="text-gray-900">
-												{ item.hot === 1 && <span className="text-danger">Hot</span> }
 											</td> */}
-											<td className="text-gray-900">{ genStatus( item.status ) }</td>
-											<td className="text-gray-900 text-nowrap">
-												{ customDate( item.created_at, 'DD/MM/yyyy' ) }
+											<td className="text-gray-900">
+												<span className="text-break" style={ { minWidth: '100px' } }>
+													{ item.genre }
+												</span>
 											</td>
-											<td>
-												<div className="d-flex align-items-center align-content-center">
-													<Link to={ `/category/edit/${ item.id }` } className="d-flex justify-content-center">
-														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
-													</Link>
-													{/* <DeleteOutlined
-														className="ml-2 cursor-pointer"
-														onClick={ () =>
-														{
-															props.deleteById( item.id );
-														} }
-														style={ { fontSize: "16px", color: "red" } } /> */}
-												</div>
-											</td>
+
+
+											{/* <td className="text-center">
+												<Link to={ `/category/edit/${ item.id }` }>
+													<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
+												</Link>
+											</td> */}
 										</tr>
 									)
 								}
@@ -102,7 +87,7 @@ export const Categories = ( props ) =>
 							{
 								( !props.datas || props.datas?.length <= 0 ) &&
 								<tr>
-									<td colSpan={ 9 } style={ { textAlign: "center", backgroundColor: '#ffff' } }>
+									<td colSpan={ 2 } style={ { textAlign: "center", backgroundColor: '#ffff' } }>
 										<img className="text-center" src={ EMPTY_IMG } style={ { width: "300px", height: "300px" } } />
 										<div style={ { color: "#9A9A9A" } }>Dữ liệu trống</div>
 									</td>

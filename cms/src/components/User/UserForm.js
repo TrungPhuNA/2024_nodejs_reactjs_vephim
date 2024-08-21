@@ -30,13 +30,10 @@ export const UserForm = ( props ) =>
 
 	useEffect( () =>
 	{
-		setStatus( [
-			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
-		] );
+
 		setUserType( [
-			{ value: 1, label: "ADMIN" },
-			{ value: 2, label: "KHÁCH HÀNG" }
+			{ value: "Admin", label: "ADMIN" },
+			{ value: "Customer", label: "KHÁCH HÀNG" }
 		] );
 		// getListRoles();
 	}, [] );
@@ -45,8 +42,8 @@ export const UserForm = ( props ) =>
 	{
 		if ( params.id )
 		{
-			setId( Number( params.id ) );
-			getData( Number( params.id ) );
+			setId(params.id );
+			getData( params.id );
 		}
 	}, [ params.id ] );
 
@@ -55,65 +52,27 @@ export const UserForm = ( props ) =>
 	{
 		if ( data )
 		{
-			let file = [];
-			file.push( {
-				uid: file.length,
-				name: data.avatar,
-				status: 'done',
-				url: buildImage( data.avatar ),
-				default: true
-			} );
-			let role = data.roles?.reduce( ( role, item ) =>
-			{
-				if ( item )
-				{
-					role.push( item.id );
-				}
-				return role;
-			}, [] );
+
 			let formValue = {
-				name: data.name,
-				// username: data.username,
+				first_name: data.first_name,
 				email: data.email,
-				address: data.address,
-				gender: data.gender,
-				status: data.status,
-				type: data.type,
-				phone: data.phone,
-				price: data.price,
-				birthDay: data.birthDay,
-				roles: role,
-				image: file
+				last_name: data.last_name,
+				account_balance: data.account_balance,
+				person_type: data.person_type,
+				phone_number: data.phone_number,
+				// password: data.password,
 			}
-			setFiles( file )
 			form.setFieldsValue( formValue )
 		}
 	}, [ data ] );
 
-	const getListRoles = async () =>
-	{
-		const result = await ROLE_SERVICE.getDataList( { page: 1, page_size: 100 }, dispatch );
-		if ( result )
-		{
-			let roles = result.roles.reduce( ( newRole, item ) =>
-			{
-				if ( item )
-				{
-					newRole.push( {
-						value: item.id,
-						label: item.guard_name
-					} )
-				}
-				return newRole
-			}, [] );
-			setRoles( roles );
-		}
-	}
+
 
 
 	const getData = async ( id ) =>
 	{
 		const rs = await USER_SERVICE.showData( id, dispatch );
+		console.log(rs);
 		if ( rs )
 		{
 			setData( rs );
@@ -194,13 +153,23 @@ export const UserForm = ( props ) =>
 					>
 						<div className='mb-3'>
 
-							<Form.Item name="name" label="Họ và tên"
-								rules={ [ { required: true } ] }
-								className=' d-block'>
-								<Input className='form-control' placeholder='Nhập tên' readOnly={ data?.type === 2 } />
-							</Form.Item>
+
 
 							<div className='row'>
+								<div className='col-md-6 col-12'>
+									<Form.Item name="first_name" label="Họ"
+										rules={ [ { required: true } ] }
+										className=' d-block'>
+										<Input className='form-control' placeholder='Nhập giá trị'  />
+									</Form.Item>
+								</div>
+								<div className='col-md-6 col-12'>
+									<Form.Item name="last_name" label="Tên"
+										rules={ [ { required: true } ] }
+										className=' d-block'>
+										<Input className='form-control' placeholder='Nhập giá trị'  />
+									</Form.Item>
+								</div>
 								{/* <div className='col-12 col-md-6'>
 								<Form.Item name="username" label="User name"
 									className=' d-block'>
@@ -211,7 +180,7 @@ export const UserForm = ( props ) =>
 									<Form.Item name="email" label="Email"
 										rules={ [ { required: true } ] }
 										className='d-block'>
-										<Input className='form-control' readOnly={ id ? true : false } placeholder='Nhập email' />
+										<Input className='form-control'  placeholder='Nhập email' />
 									</Form.Item>
 								</div>
 								{ !id && <div className='col-12 col-md-6'>
@@ -221,81 +190,13 @@ export const UserForm = ( props ) =>
 									</Form.Item>
 								</div> }
 								<div className='col-12 col-md-6'>
-									<Form.Item name="phone" label="SĐT"
+									<Form.Item name="phone_number" label="SĐT"
 										className='required d-block'>
-										<Input className='form-control' readOnly={ data?.type === 2 } placeholder='Nhập số điện thoại' />
+										<Input className='form-control' placeholder='Nhập số điện thoại' />
 									</Form.Item>
 								</div>
-
-
 								<div className='col-12 col-md-6'>
-									<Form.Item
-										label="Hình ảnh"
-										name="image"
-										accept="images/**"
-										className='d-block'
-										valuePropName="fileList"
-										fileList={ files }
-										readOnly={ data?.type === 2 }
-										getValueFromEvent={ normFile }
-									>
-										<Upload action="/upload" listType="picture-card">
-											{ files.length < 1 && <div>
-												<PlusOutlined />
-												<div style={ { marginTop: 8 } }>Upload</div>
-											</div> }
-										</Upload>
-									</Form.Item>
-								</div>
-							</div>
-							<div className='row'>
-								<div className='col-12 col-md-3'>
-									<Form.Item name="gender" label="Giới tính"
-										rules={ [ { required: true } ] } className='d-block'>
-										<Select
-											placeholder="Chọn giới tính"
-											style={ { width: '100%' } }
-											disabled={ data?.type === 2 }
-											options={ [
-												{
-													value: 'MALE',
-													label: 'Male'
-												},
-												{
-													value: 'FEMALE',
-													label: 'Female'
-												},
-												{
-													value: 'OTHER',
-													label: 'Other'
-												}
-											] }
-										/>
-									</Form.Item>
-								</div>
-								<div className='col-12 col-md-3'>
-									<Form.Item name="status" label="Trạng thái"
-										rules={ [ { required: true } ] } className='d-block'>
-										<Select
-											placeholder="Chọn trạng thái"
-											style={ { width: '100%' } }
-											options={ status }
-										/>
-									</Form.Item>
-								</div>
-								<div className='col-12 col-md-3'>
-									<Form.Item name="birthDay" readOnly={ data?.type === 2 } label="Ngày sinh" className='d-block'>
-										<Input type='date' className='form-control' />
-									</Form.Item>
-								</div>
-								{/* <div className='col-12 col-md-3'>
-									<Form.Item name="type" label="Birthday" className='d-block'>
-										<Input className='form-control' />
-									</Form.Item>
-								</div> */}
-
-								<div className='col-12 col-md-3'>
-									<Form.Item name="type" label="Loại tài khoản"
+									<Form.Item name="person_type" label="Loại tài khoản"
 										rules={ [ { required: true } ] } className='d-block'>
 										<Select
 											placeholder="Chọn loại tài khoản"
@@ -304,27 +205,9 @@ export const UserForm = ( props ) =>
 										/>
 									</Form.Item>
 								</div>
+
+								
 							</div>
-							<Form.Item name="address" label="Địa chỉ"
-								className=' d-block'>
-								<Input className='form-control' readOnly={ data?.type === 2 } placeholder='Nhập địa chỉ' />
-							</Form.Item>
-
-							{/* {
-								data?.type !== 2 && <Form.Item name="roles" label="Role"
-									rules={ [ { required: true } ] } className='d-block'>
-									<Select
-										placeholder="Chọn vai trò"
-										showSearch
-										mode="multiple"
-										filterOption={ ( input, option ) => ( option?.label?.toLowerCase() ).includes( input?.toLowerCase() ) }
-
-										style={ { width: '100%' } }
-										options={ roles }
-									/>
-								</Form.Item>
-							} */}
-
 						</div>
 
 						<div className='d-flex justify-content-center'>

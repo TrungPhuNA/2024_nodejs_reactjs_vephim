@@ -32,21 +32,21 @@ export const ROUTERS = [
 		component: Dashboard
 	},
 	{
-		path: '/product/list',
+		path: '/movie/list',
 		exact: true,
-		redirectFrom: '/product', 
-		title: 'List product',
+		redirectFrom: '/movie', 
+		title: 'List Movie',
 		component: ProductContainer,
 	},
 	{
-		path: '/product/create',
+		path: '/movie/create',
 		exact: true,
 		title: 'Add new product',
 		redirectFrom: null, 
 		component: ProductForm,
 	},
 	{
-		path: '/product/edit/:id',
+		path: '/movie/edit/:id',
 		exact: true,
 		redirectFrom: null, 
 		title: 'Edit product',

@@ -62,48 +62,46 @@ export const ProductForm = ( props ) =>
 	{
 		if ( product )
 		{
-			let file = [];
-			file.push( {
-				uid: file.length,
-				name: product?.avatar,
-				status: 'done',
-				path: product?.avatar,
-				url: buildImage( product.avatar ),
-				default: true
-			} );
+			// let file = [];
+			// file.push( {
+			// 	uid: file.length,
+			// 	name: product?.avatar,
+			// 	status: 'done',
+			// 	path: product?.avatar,
+			// 	url: buildImage( product.avatar ),
+			// 	default: true
+			// } );
 
-			if ( product?.product_images?.length > 0 )
-			{
-				file = product.product_images.reduce( ( newFile, item ) =>
-				{
-					if ( item )
-					{
-						newFile.push( {
-							uid: file.length,
-							name: item.name,
-							status: 'done',
-							path: item.path,
-							url: buildImage( item.path ),
-							default: true
-						} );
-					}
-					return newFile;
-				}, file )
-			}
-			setFiles( file )
+			// if ( product?.product_images?.length > 0 )
+			// {
+			// 	file = product.product_images.reduce( ( newFile, item ) =>
+			// 	{
+			// 		if ( item )
+			// 		{
+			// 			newFile.push( {
+			// 				uid: file.length,
+			// 				name: item.name,
+			// 				status: 'done',
+			// 				path: item.path,
+			// 				url: buildImage( item.path ),
+			// 				default: true
+			// 			} );
+			// 		}
+			// 		return newFile;
+			// 	}, file )
+			// }
+			// setFiles( file )
+			console.log(product.genres?.split(', '));
 			let formValue = {
 				name: product.name,
-				category_id: product.category_id,
-				content: product.content,
-				description: product.description,
-				status: product.status,
-				sale: product.sale,
-				hot: product.hot === 1 ? true : false,
-				number: product.number,
-				price: product.price,
-				sale_to: product.sale_to ? moment( product.sale_to ).format( 'yyyy-MM-DD' ) : null,
-				slug: product.slug,
-				image: file
+				genre: product.genres?.split(', '),
+				language: product.language,
+				synopsis: product.synopsis,
+				rating: product.rating,
+				duration: product.duration,
+				top_cast: product.top_cast,
+				release_date: product.release_date ? moment( product.release_date ).format( 'yyyy-MM-DD' ) : null,
+				image_path: product?.image_path
 			}
 			form.setFieldsValue( formValue );
 			let options = product?.options?.length > 0 ? product?.options : initOptions;
@@ -113,7 +111,7 @@ export const ProductForm = ( props ) =>
 
 	const getListCategories = async () =>
 	{
-		const result = await getCategoriesByFilter( { page: 1, page_size: 20, status: 1 }, dispatch );
+		const result = await getCategoriesByFilter( { page: 1, page_size: 1000 }, dispatch );
 		await timeDelay( 500 );
 		dispatch( toggleShowLoading( false ) );
 		if ( result )
@@ -123,12 +121,13 @@ export const ProductForm = ( props ) =>
 				if ( item )
 				{
 					newCate.push( {
-						value: item.id,
-						label: item.name
+						value: item.genre,
+						label: item.genre
 					} )
 				}
 				return newCate
 			}, [] );
+			console.log(category);
 			setCategories( category );
 		}
 	}
@@ -194,8 +193,8 @@ export const ProductForm = ( props ) =>
 	}
 	const routes = [
 		{
-			name: 'Sản phẩm',
-			route: '/product/list'
+			name: 'Phim',
+			route: '/movie/list'
 		},
 		{
 			name: id ? 'Cập nhật' : 'Tạo mới',
@@ -205,7 +204,7 @@ export const ProductForm = ( props ) =>
 
 	return (
 		<>
-			<Breadcrumbs routes={ routes } title={ "Sản phẩm" } />
+			<Breadcrumbs routes={ routes } title={ "Phim" } />
 			<div className="w-75 mx-auto">
 				<Widget>
 					<Form
@@ -217,22 +216,16 @@ export const ProductForm = ( props ) =>
 						validateMessages={ validateMessages }
 					>
 						<div className='mb-3'>
-							<Form.Item name="name" label="Tên sản phẩm"
+							<Form.Item name="name" label="Tên phim"
 								rules={ [ { required: true } ] }
 								className=' d-block'>
 								<Input className='form-control' placeholder='Nhập tên' />
 							</Form.Item>
 
-							<Form.Item name="slug" label="Slug"
-								rules={ [ { required: true } ] }
-								className=' d-block'>
-								<Input className='form-control' placeholder='Nhập slug' />
-							</Form.Item>
-
-							<Form.Item name="category_id" label="Phân loại"
+							<Form.Item name="genre" label="Danh mục"
 								rules={ [ { required: true } ] } className='d-block'>
 								<Select
-									placeholder="Chọn phân loại"
+									placeholder="Chọn danh mục"
 									showSearch
 									filterOption={ ( input, option ) => ( option?.label?.toLowerCase() ).includes( input?.toLowerCase() ) }
 
@@ -240,7 +233,12 @@ export const ProductForm = ( props ) =>
 									options={ categories }
 								/>
 							</Form.Item>
-							<Form.Item
+							<Form.Item name="image_path" label="Hình ảnh"
+								rules={ [ { required: true } ] }
+								className=' d-block'>
+								<Input className='form-control' placeholder='Nhập giá trị' />
+							</Form.Item>
+							{/* <Form.Item
 								label="Hình ảnh"
 								name="image"
 								accept="images/**"
@@ -255,15 +253,15 @@ export const ProductForm = ( props ) =>
 										<div style={ { marginTop: 8 } }>Upload</div>
 									</div> }
 								</Upload>
-							</Form.Item>
+							</Form.Item> */}
 
-							<Form.Item name="description" label="Mô tả ngắn"
+							<Form.Item name="synopsis" label="Mô tả"
 								rules={ [ { required: true } ] }
 								className=' d-block'>
-								<Input.TextArea rows={ 5 } className='form-control' placeholder='Mô tả ngắn' />
+								<Input.TextArea rows={ 5 } className='form-control' placeholder='Mô tả' />
 							</Form.Item>
 
-							<Form.Item name="content" label="Mô tả"
+							{/* <Form.Item name="content" label="Mô tả"
 								rules={ [ { required: true } ] }
 								className='d-block'>
 								<CKEditor
@@ -274,125 +272,35 @@ export const ProductForm = ( props ) =>
 										form.setFieldValue( 'content', editor?.getData() || null )
 									} }
 								/>
+							</Form.Item> */}
+							<Form.Item name="top_cast" label="Diễn viên"
+								rules={ [ { required: true } ] }
+								className=' d-block'>
+								<Input.TextArea rows={ 5 } className='form-control' placeholder='Nhập giá trị' />
 							</Form.Item>
-
-							<div className='form-group'>
-								<label >Thuộc tính</label>
-								<div className='mt-2'>
-									<div className="table-item row w-100 mx-auto" style={ { lineHeight: 3, backgroundColor: "#eef5f9", fontWeight: "700", borderBottom: "1px solid #F1F3F8" } }>
-										<div className="text-center table-item__id col-5">Key</div>
-										<div className="table-item__info col-5 text-center"
-											style={ { borderLeft: "1px solid #d9d9d9", borderRight: "1px solid #d9d9d9" } }>
-											Value
-										</div>
-										<div className="table-item__action col-2">Action</div>
-									</div>
-									{
-										attributes?.length > 0 && attributes.map( ( item, key ) =>
-										{
-											return (
-												<div key={ key } className='w-100 mx-auto'>
-
-													<div className="style-scroll" style={ { overflow: "hidden", overflowY: "auto", boxShadow: "1px 0 8px rgba(0, 0, 0, .08) inset;" } }>
-														<div className="table-item w-100 mx-auto row py-1" style={ { border: "1px solid #d9d9d9" } }>
-															<div className="text-center table-item__id col-5">
-																<input className='form-control' defaultValue={ item.key } onChange={ ( e ) =>
-																{
-																	if ( e )
-																	{
-																		attributes[ key ].key = e?.target?.value;
-																		console.log( "------> ", attributes );
-																		setAttributes( attributes );
-																	}
-																} } />
-															</div>
-															<div className="table-item__info col-5"
-																style={ { borderLeft: "1px solid #d9d9d9", borderRight: "1px solid #d9d9d9" } }>
-																<input className='form-control' defaultValue={ item.value } onChange={ ( e ) =>
-																{
-																	if ( e )
-																	{
-																		attributes[ key ].value = e?.target?.value;
-																		console.log( "------> value", attributes );
-																		setAttributes( attributes );
-																	}
-																} } />
-
-															</div>
-															<div className="table-item__action col-2 d-flex justify-content-center">
-																{ attributes?.length > 1 &&
-																	<DeleteOutlined className=" text-danger text-center cursor-pointer"
-																		style={ { fontSize: "20px" } } onClick={ () =>
-																		{
-																			let value = attributes.filter( ( e, index ) => index !== key );
-																			setAttributes( value )
-																		} } /> }
-															</div>
-														</div>
-													</div>
-												</div>
-											);
-										} )
-									}
-
-									<div className='mt-3'>
-										<button type='button' className='btn btn-success' onClick={ () =>
-										{
-											setAttributes( attributes.concat( { key: "", value: "" } ) )
-										} }>
-											<PlusCircleOutlined style={ { fontSize: "20px" } } />
-										</button>
-									</div>
-
-								</div>
-							</div>
-
 							<div className='row'>
-
 								<div className='col-md-4'>
-									<Form.Item name="price" label="Giá"
+									<Form.Item name="duration" label="Thời lượng"
 										rules={ [ { required: true } ] }
 										className='d-block'>
-										<Input className='form-control' placeholder='Nhập giá sản phẩm' />
+										<Input className='form-control' placeholder='Nhập giá trị' />
 									</Form.Item>
 								</div>
-								<div className='col-md-4'>
-									<Form.Item name="number" label="Số lượng"
-										rules={ [ { required: true } ] }
+								<div className='col-md-4' >
+									<Form.Item name="rating" label="Rating"
 										className='d-block'>
-										<Input type='number' className='form-control' placeholder='Nhập số lượng' />
+										<Input type='number'  className='form-control' placeholder='Nhập giá trị' />
 									</Form.Item>
 								</div>
 								<div className='col-md-4'>
-									<Form.Item name="sale" label="Giảm giá"
+									<Form.Item name="release_date" label="Ngày chiếu"
 										className=' d-block'>
-										<Input className='form-control' type='number' max={ 100 } placeholder='(%)' />
+										<Input className='form-control' type='date' placeholder='Chọn giá trị' />
 									</Form.Item>
 								</div>
-								{/* <div className='col-md-4'>
-									<Form.Item name="sale_to" label="Giảm đến ngày"
-										className=' d-block'>
-										<Input type='date' className='form-control' />
-									</Form.Item>
-								</div> */}
-
-								<div className='col-md-4'>
-									<Form.Item name="status" label="Trạng thái"
-										rules={ [ { required: true } ] } className='d-block'>
-										<Select
-											placeholder="Chọn trạng thái"
-											style={ { width: '100%' } }
-											options={ status }
-										/>
-									</Form.Item>
-								</div>
-
+								
 
 							</div>
-
-							<Form.Item name="hot" label="Is hot?" valuePropName="checked">
-								<Switch />
-							</Form.Item>
 
 						</div >
 

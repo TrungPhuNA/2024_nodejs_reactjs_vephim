@@ -8,7 +8,7 @@ export const SIDE_BARS = [
 	{
 		path: '/user',
 		icon: 'eva eva-people',
-		title: 'Phim',
+		title: 'Người dùng',
 		key: -5
 		// children: [
 		// 	{
@@ -24,9 +24,9 @@ export const SIDE_BARS = [
 		// ]
 	},
 	{
-		path: '/product',
+		path: '/movie',
 		icon: 'eva eva-list',
-		title: 'Phòng chiếu',
+		title: 'Phim',
 		// children: [
 		// 	{
 		// 		path: '/product/list',
@@ -40,6 +40,12 @@ export const SIDE_BARS = [
 		// 	},
 		// ]
 	},
+	// {
+	// 	path: '/product',
+	// 	icon: 'eva eva-list',
+	// 	title: 'Phòng chiếu',
+		
+	// },
 	{
 		path: '/category',
 		icon: 'eva eva-sun',

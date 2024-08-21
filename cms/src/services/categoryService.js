@@ -7,7 +7,7 @@ import uploadApi from "./upload";
 export const getCategories = async ( params ) =>
 {
 	let filter = buildFilter( params );
-	return await getMethod( '/admin/category', filter );
+	return await getMethod( '/api/v1/admin/category', filter );
 }
 
 export const showCategory = async ( id, params ) =>

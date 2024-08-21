@@ -39,7 +39,7 @@ const App = ( props ) =>
 				<Route path="/error" exact component={ ErrorPage } />
 				<Route path="/register" exact component={ Register } />
 				<Route path="/" exact render={ () => <Redirect to="/dashboard" /> } />
-				<Route path="/product" exact render={ () => <Redirect to="/product/list" /> } />
+				<Route path="/movie" exact render={ () => <Redirect to="/movie/list" /> } />
 				<Route path="/user" exact render={ () => <Redirect to="/user/list" /> } />
 				<Route path="/category" exact render={ () => <Redirect to="/category/list" /> } />
 				<Route path="/order" exact render={ () => <Redirect to="/order/list" /> } />

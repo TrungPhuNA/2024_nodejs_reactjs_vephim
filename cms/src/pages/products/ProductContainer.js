@@ -45,8 +45,8 @@ export const ProductContainer = () =>
 
 	const routes = [
 		{
-			name: 'Sản phẩm',
-			route: '/product/list'
+			name: 'Phim',
+			route: '/movie/list'
 		},
 		{
 			name: 'Danh sách',
@@ -74,7 +74,7 @@ export const ProductContainer = () =>
 
 	return (
 		<>
-			<Breadcrumbs routes={ routes } title={ "Sản phẩm" } /> <Products
+			<Breadcrumbs routes={ routes } title={ "Phim" } /> <Products
 				products={ products }
 				paging={ paging }
 				params={ params }
