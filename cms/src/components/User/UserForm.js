@@ -185,7 +185,7 @@ export const UserForm = ( props ) =>
 								</div>
 								{ !id && <div className='col-12 col-md-6'>
 									<Form.Item name="password" label="Mật khẩu"
-										className='required d-block'>
+										className='required d-block' rules={ [ { required: !id ? true : false } ] }>
 										<Input.Password className='form-control' placeholder='Nhập mật khẩu' />
 									</Form.Item>
 								</div> }
