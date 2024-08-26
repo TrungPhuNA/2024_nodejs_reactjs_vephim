@@ -137,36 +137,7 @@ export const ROUTERS = [
 		title: 'Chỉnh sửa',
 		component: OrderForm,
 	},
-	{
-		path: '/setting/permission/list',
-		exact: true,
-		redirectFrom: '/permission', 
-		title: 'Danh sách',
-		component: Permissions,
-	},
-	{
-		path: '/setting/role/list',
-		exact: true,
-		redirectFrom: '/role', 
-		title: 'Danh sách',
-		component: Roles,
-	},
-
-	{
-		path: '/setting/role/create',
-		exact: true,
-		redirectFrom: '/role', 
-		title: 'Tạo mới',
-		component: RoleForm,
-	},
-
-	{
-		path: '/setting/role/edit/:id',
-		exact: true,
-		redirectFrom: '/role', 
-		title: 'Chỉnh sửa',
-		component: RoleForm,
-	},
+	
 
 	{
 		path: '/profile',
@@ -193,24 +164,24 @@ export const ROUTERS = [
 	},
 
 	{
-		path: '/discount/list',
+		path: '/schedule',
 		exact: true,
-		redirectFrom: '/discount', 
-		title: 'Discount',
+		redirectFrom: '/schedule', 
+		title: 'schedule',
 		component: DiscountContainer,
 	},
 	{
-		path: '/discount/create',
+		path: '/schedule/create',
 		exact: true,
 		redirectFrom: null, 
-		title: 'Create Discount',
+		title: 'Create schedule',
 		component: DiscountForm,
 	},
 	{
-		path: '/discount/edit/:id',
+		path: '/schedule/edit/:id',
 		exact: true,
 		redirectFrom: null, 
-		title: 'Update Discount',
+		title: 'Update schedule',
 		component: DiscountForm,
 	},
 	{

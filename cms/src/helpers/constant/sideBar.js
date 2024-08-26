@@ -6,7 +6,7 @@ export const SIDE_BARS = [
 		key: -1 
 	},
 	{
-		path: '/user',
+		path: '/user/list',
 		icon: 'eva eva-people',
 		title: 'Người dùng',
 		key: -5
@@ -47,7 +47,7 @@ export const SIDE_BARS = [
 		
 	// },
 	{
-		path: '/category',
+		path: '/category/list',
 		icon: 'eva eva-sun',
 		title: 'Danh mục',
 		// children: [
@@ -65,7 +65,7 @@ export const SIDE_BARS = [
 	},
 
 	{
-		path: '/discount',
+		path: '/schedule',
 		icon: 'eva eva-flash',
 		title: 'Lịch chiếu',
 		// children: [
@@ -82,7 +82,7 @@ export const SIDE_BARS = [
 		// ]
 	},
 	{
-		path: '/room',
+		path: '/room/list',
 		icon: 'eva eva-bookmark',
 		title: 'Phòng chiếu',
 		key: -1 
@@ -117,7 +117,7 @@ export const SIDE_BARS = [
 	// 	key: -7
 	// },
 	{
-		path: '/order',
+		path: '/order/list',
 		icon: 'eva eva-grid',
 		title: 'Đặt vé xem phim',
 		key: -4

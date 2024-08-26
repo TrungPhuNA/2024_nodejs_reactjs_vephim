@@ -14,8 +14,8 @@ export const DiscountSearch = ( props ) =>
 	useEffect( () =>
 	{
 		setStatus( [
-			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
+			{ value: "3D", label: "3D" },
+			{ value: "2D", label: "2D" }
 		] );
 
 		setHot( [
@@ -35,7 +35,6 @@ export const DiscountSearch = ( props ) =>
 		{
 			value.id = value.id.trim();
 		}
-		console.log(value);
 		props.getDatasByFilter( { page: 1, page_size: props?.paging?.page_size, ...value } );
 		props.setParams( value );
 	}
@@ -46,8 +45,8 @@ export const DiscountSearch = ( props ) =>
 		props.setParams( {
 			id: null,
 			name: null,
-			status: null,
-			code: null
+			showtime_date: null,
+			show_type: null,
 		} );
 		form.resetFields();
 	}
@@ -58,20 +57,16 @@ export const DiscountSearch = ( props ) =>
 			onFinish={ submitForm }
 		>
 			<div className="row mb-1">
-				<div className="col-md-3 mb-2 form-group">
-					<Form.Item name="code" label="Code" className='mb-0 d-block'>
-						<Input className='form-control' placeholder='Enter code' />
+				{/* <div className="col-md-3 mb-2 form-group">
+					<Form.Item name="showtime_date" label="Ngày chiếu" className='mb-0 d-block'>
+						<Input type='date' className='form-control' />
 					</Form.Item>
-				</div>
-				<div className="col-md-3 mb-2 form-group">
-					<Form.Item name="name" label="name" className='mb-0 d-block'>
-						<Input className='form-control' placeholder='Enter name' />
-					</Form.Item>
-				</div>
+				</div> */}
+				
 				<div className="col-md-3 mb-2">
-					<Form.Item name="status" label="Status" className='mb-0 d-block'>
+					<Form.Item name="show_type" label="Loại phim" className='mb-0 d-block'>
 						<Select
-							placeholder="Select status"
+							placeholder="Chọn giá trị"
 							style={ { width: '100%' } }
 							options={ status }
 						/>

@@ -7,28 +7,28 @@ import uploadApi from "./upload";
 export const DiscountService = {
 	async create ( data )
 	{
-		return await postMethod( `/admin/discount/store`, data );
+		return await postMethod( `/api/v1/admin/schedule/store`, data );
 	},
 
 	async getList ( params )
 	{
 		let filter = buildFilter( params );
-		return await getMethod( '/admin/discount', filter );
+		return await getMethod( '/api/v1/admin/schedule', filter );
 	},
 	async show ( id, params )
 	{
 		let filter = buildFilter( params );
-		return await getMethod( '/admin/discount/show/' + id, filter );
+		return await getMethod( '/api/v1/admin/schedule/show/' + id, filter );
 	},
 
 	async update ( id, data )
 	{
-		return await putMethod( `/admin/discount/update/${ id }`, data );
+		return await putMethod( `/api/v1/admin/schedule/update/${ id }`, data );
 	},
 
 	async delete ( id )
 	{
-		return await deleteMethod( `/admin/discount/delete/${ id }` );
+		return await deleteMethod( `/api/v1/admin/schedule/delete/${ id }` );
 	}
 }
 export const submitDiscountForm = async ( id = null, e, dispatch, history ) =>
@@ -49,7 +49,7 @@ export const submitDiscountForm = async ( id = null, e, dispatch, history ) =>
 		{
 			message.success( `${id && 'Update' || 'Create'} successfully!` );
 			await timeDelay( 500 );
-			history.push( '/discount/list' );
+			history.push( '/schedule' );
 		} else if ( response?.status === 'fail' && response?.data )
 		{
 			let error = Object.entries( response?.data ) || [];

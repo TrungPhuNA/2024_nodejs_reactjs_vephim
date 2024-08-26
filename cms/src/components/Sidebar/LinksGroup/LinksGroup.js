@@ -22,6 +22,7 @@ const LinksGroup = ( props ) =>
 		exact = true
 	} = props;
 
+
 	const [ headerLinkClicked, setHeaderLinkClicked ] = useState( false );
 
 	const togglePanelCollapse = ( link, e ) =>
@@ -33,9 +34,9 @@ const LinksGroup = ( props ) =>
 
 	const isOpen = props.activeItem && props.activeItem.includes( props.index ) && headerLinkClicked;
 
-
 	if ( !props.childrenLinks )
 	{
+
 		if ( props.isHeader )
 		{
 			return (
@@ -56,6 +57,7 @@ const LinksGroup = ( props ) =>
 				</li>
 			);
 		}
+		console.log(1);
 		return (
 			<li>
 				<NavLink
@@ -63,7 +65,7 @@ const LinksGroup = ( props ) =>
 					activeClassName={ s.headerLinkActive }
 					onClick={ ( e ) =>
 					{
-						
+
 					} }
 					exact={ exact }
 				>
@@ -72,6 +74,7 @@ const LinksGroup = ( props ) =>
 			</li>
 		);
 	}
+	console.log(2);
 	return (
 		// @ts-ignore
 		<Route
@@ -79,6 +82,7 @@ const LinksGroup = ( props ) =>
 			children={ ( params ) =>
 			{
 				const { match } = params;
+				console.log( "route------>< ", params );
 				return (
 					<li className={ classnames( { [ s.headerLink ]: props.isHeader }, props.className ) }>
 						<a className={ classnames( "d-flex", { [ s.headerLinkActive ]: match }, { [ s.collapsed ]: isOpen }, ) }

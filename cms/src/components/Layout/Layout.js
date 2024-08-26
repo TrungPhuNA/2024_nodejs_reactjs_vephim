@@ -26,7 +26,6 @@ const Layout = ( props ) =>
 		if ( !accessToken )
 		{
 			localStorage.clear();
-			console.log(1);
 			window.location.href = '/login';
 		}
 	}, [])

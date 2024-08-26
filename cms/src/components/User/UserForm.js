@@ -72,7 +72,6 @@ export const UserForm = ( props ) =>
 	const getData = async ( id ) =>
 	{
 		const rs = await USER_SERVICE.showData( id, dispatch );
-		console.log(rs);
 		if ( rs )
 		{
 			setData( rs );

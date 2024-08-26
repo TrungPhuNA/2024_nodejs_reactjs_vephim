@@ -28,7 +28,6 @@ export const Categories = ( props ) =>
 		}
 	}
 
-	console.log( "props========? ", props );
 	return (
 		<>
 			<Widget>

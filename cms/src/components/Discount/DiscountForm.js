@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import React from 'react';
 import Widget from '../Widget/Widget';
 import { useForm } from 'antd/lib/form/Form';
-import { toSlug } from '../../helpers/common/common';
+import { customDate, toSlug } from '../../helpers/common/common';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 import { toggleShowLoading } from '../../redux/actions/common';
@@ -23,9 +23,9 @@ export const DiscountForm = ( props ) =>
 
 	useEffect( () =>
 	{
-		setStatus( [
-			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
+		setStatus([
+			{ value: "3D", label: "3D" },
+			{ value: "2D", label: "2D" }
 		] );
 	}, [] );
 
@@ -33,12 +33,8 @@ export const DiscountForm = ( props ) =>
 	{
 		if ( params.id )
 		{
-			console.log(params.id);
 			setId( params.id );
 			getData( params.id );
-		} else
-		{
-			form.setFieldValue( 'max_process', 0 )
 		}
 	}, [ params.id ] );
 
@@ -50,13 +46,13 @@ export const DiscountForm = ( props ) =>
 		{
 
 			let formValue = {
-				name: data.name,
-				price: data.price,
+				movie_start_time: data.movie_start_time,
+				show_type: data.show_type,
 				status: data.status,
-				max_use: data.max_use,
-				max_process: data.max_process || 0,
-				code: data.code || 0
+				showtime_date: data.showtime_date ? customDate(data.showtime_date, 'yyyy-MM-DD') : null,
+				price_per_seat: data.price_per_seat || 0,
 			}
+			console.log(formValue);
 			form.setFieldsValue( formValue )
 
 		}
@@ -93,7 +89,6 @@ export const DiscountForm = ( props ) =>
 
 	const submitForm = async ( e ) =>
 	{
-		e.code = e.code.replaceAll( ' ', '' )
 		await submitDiscountForm( id, e, dispatch, history );
 	}
 
@@ -119,8 +114,8 @@ export const DiscountForm = ( props ) =>
 	}
 	const routes = [
 		{
-			name: 'Giảm giá',
-			route: '/discount/list'
+			name: 'Lịch chiếu',
+			route: '/schedule'
 		},
 		{
 			name: id ? 'Cập nhật' : 'Tạo mới',
@@ -130,7 +125,7 @@ export const DiscountForm = ( props ) =>
 
 	return (
 		<>
-			<Breadcrumbs routes={ routes } title={ "Giảm giá" } />
+			<Breadcrumbs routes={ routes } title={ "Lịch chiếu" } />
 			<div className="w-75 mx-auto">
 				<Widget>
 					<Form
@@ -142,41 +137,35 @@ export const DiscountForm = ( props ) =>
 						validateMessages={ validateMessages }
 					>
 						<div className='mb-3'>
-							<Form.Item name="name" label="Tên"
+							<Form.Item name="movie_start_time" label="Thời gian"
 								rules={ [ { required: true } ] }
 								className=' d-block'>
-								<Input className='form-control' placeholder='Nhập tên' />
+								<Input className='form-control' placeholder='Nhập giá trị' />
 							</Form.Item>
 
 							<div className='row'>
 								<div className='col-12 col-md-6'>
-									<Form.Item name="code" label="Mã"
+									<Form.Item  name="showtime_date" label="Ngày chiếu"
 										rules={ [ { required: true } ] }
 										className=' d-block'>
-										<Input className='form-control' placeholder='Nhập mã' />
+										<Input type='date' className='form-control' placeholder='Nhập mã' />
 									</Form.Item>
 								</div>
 								<div className='col-12 col-md-6'>
-									<Form.Item name="price" label="Giảm giá"
+									<Form.Item name="price_per_seat" label="Giá vé"
 										rules={ [ { required: true } ] }
 										className=' d-block'>
-										<Input type="number" className='form-control' placeholder='Nhập giá giảm' />
+										<Input type="number" className='form-control' placeholder='Nhập giá trị' />
 									</Form.Item>
 								</div>
 
-								{/* <div className='col-12 col-md-6'>
-								<Form.Item name="max_use" label="Max use"
-									rules={ [ { required: true } ] }
-									className=' d-block'>
-									<Input type="number" className='form-control' placeholder='Enter value' />
-								</Form.Item>
-							</div> */}
+								
 
 								<div className='col-12 col-md-6'>
-									<Form.Item name="status" label="Tình trạng"
+									<Form.Item name="show_type" label="Thể loại"
 										rules={ [ { required: true } ] } className='d-block'>
 										<Select
-											placeholder="Chọn tình trạng"
+											placeholder="Chọn giá trị"
 											style={ { width: '100%' } }
 											options={ status }
 										/>

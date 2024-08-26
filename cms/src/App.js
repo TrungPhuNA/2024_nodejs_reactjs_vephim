@@ -30,7 +30,6 @@ import { getItem } from "./services/common";
 
 const App = ( props ) =>
 {
-	console.log(props);
 	return (
 		<BrowserRouter>
 			<Loading />

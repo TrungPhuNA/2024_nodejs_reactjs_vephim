@@ -91,7 +91,6 @@ export const ProductForm = ( props ) =>
 			// 	}, file )
 			// }
 			// setFiles( file )
-			console.log( product.genres?.split( ', ' ) );
 			let formValue = {
 				name: product.name,
 				genre: product.genres,
@@ -128,7 +127,6 @@ export const ProductForm = ( props ) =>
 				}
 				return newCate
 			}, [] );
-			console.log( category );
 			setCategories( category );
 		}
 	}

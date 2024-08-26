@@ -31,9 +31,10 @@ export const DiscountContainer = () =>
 
 			dispatch( toggleShowLoading( true ) )
 			const response = await DiscountService.getList( filter );
+			console.log(response);
 			if ( response?.status === 'success' )
 			{
-				setDataList( response?.data?.discounts || [] );
+				setDataList( response?.data?.schedules || [] );
 				setPaging( response?.data?.meta || INIT_PAGING );
 			}
 			dispatch( toggleShowLoading( false ) );
@@ -65,18 +66,18 @@ export const DiscountContainer = () =>
 
 	const routes = [
 		{
-			name: 'Giảm giá',
-			route: '/discount'
+			name: 'Lịch chiếu',
+			route: '/schedule'
 		},
 		{
 			name: 'Danh sách',
-			route: '/discount/list'
+			route: '/schedule/list'
 		}
 	];
 
 	return (
 		<>
-			<Breadcrumbs routes={ routes } title={ "Giảm giá" } />
+			<Breadcrumbs routes={ routes } title={ "Lịch chiếu" } />
 			<Discount
 				dataList={ dataList }
 				paging={ paging }

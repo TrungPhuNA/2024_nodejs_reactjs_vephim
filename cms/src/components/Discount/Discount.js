@@ -34,7 +34,7 @@ export const Discount = ( props ) =>
 			<Widget>
 				<div className="p-5">
 					<div className="mb-3">
-						<Link to="/discount/create" className="btn btn-info">
+						<Link to="/schedule/create" className="btn btn-info">
 							<span className="d-flex align-items-center"><i className="eva eva-plus mr-2"></i> Create</span>
 						</Link>
 					</div>
@@ -47,10 +47,10 @@ export const Discount = ( props ) =>
 						<thead>
 							<tr>
 								<th>#</th>
-								<th className="text-nowrap">Tiêu đề</th>
-								<th className="text-nowrap">Code</th>
+								<th className="text-nowrap">Thời gian bắt đầu</th>
+								<th className="text-nowrap">Loại phim</th>
 								<th className="text-nowrap">Giá</th>
-								<th className="text-nowrap">Trạng thái</th>
+								<th className="text-nowrap">Ngày chiếu</th>
 								<th className="text-nowrap text-center">Thao tác</th>
 							</tr>
 						</thead>
@@ -63,19 +63,19 @@ export const Discount = ( props ) =>
 											<td className="text-gray-900 text-center">{ ( props.paging.page - 1 ) * props.paging.page_size + ( key + 1 ) }</td>
 											
 											<td className="text-gray-900">
-												<span className="text-break" style={ { minWidth: '100px' } }>{ item.name }</span>
+												<span className="text-break" style={ { minWidth: '100px' } }>{ item.movie_start_time }</span>
 											</td>
 											<td className="text-gray-900">
-												<span className="text-break" style={ { minWidth: '100px' } }>{ item.code }</span>
+												<span className="text-break" style={ { minWidth: '100px' } }>{ item.show_type }</span>
 											</td>
 											<td className="text-gray-900">
-												<span className="text-break" style={ { minWidth: '100px' } }>{ customNumber(item.price, ',', 'đ') }</span>
+												<span className="text-break" style={ { minWidth: '100px' } }>{ customNumber(item.price_per_seat, ',', 'đ') }</span>
 											</td>
-											<td className="text-gray-900">{ genStatus( item.status ) }</td>
+											<td className="text-gray-900">{ customDate( item.showtime_date, 'DD/MM/yyyy' ) }</td>
 
 											<td>
 												<div className="d-flex justify-content-center align-items-center">
-													<Link to={ `/discount/edit/${ item.id }` } className="d-flex justify-content-center">
+													<Link to={ `/schedule/edit/${ item.id }` } className="d-flex justify-content-center">
 														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
 													</Link>
 													{/* <DeleteOutlined
@@ -110,7 +110,7 @@ export const Discount = ( props ) =>
 						<div className="mx-auto d-flex justify-content-center my-4">
 							<Pagination
 								onChange={ e =>
-									props.getList( { ...props.paging, page: e, ...props.params } )
+									props.getDatasByFilter( { ...props.paging, page: e, ...props.params } )
 								}
 								pageSize={ props.paging.page_size }
 								defaultCurrent={ props.paging.page }
