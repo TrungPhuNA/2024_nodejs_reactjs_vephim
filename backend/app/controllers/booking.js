@@ -23,12 +23,16 @@ exports.getAll = async ( req, res ) =>
 		let sql =
 			`SELECT ti.price, ti.purchase_date, 
 				NULLIF(m.name, '') as movie_name, 
+				pe.*,
 				NULLIF(m.image_path, '') as image_path, 
 				NULLIF(s.name, '') as seat_name, 
-				
+				NULLIF(h.name, '') as hall_name, 
+				NULLIF(th.name, '') as theatre_name,
 				NULLIF(sh.show_type, '') as show_type, 
 				NULLIF(sh.movie_start_time, ''), 
-				NULLIF(DATE_FORMAT(sh.showtime_date, '%Y-%m-%d'), ''), ti.payment_id 
+				sh.showtime_date, 
+				th.location,
+				ti.payment_id 
 				FROM ticket ti 
 				INNER JOIN movie m ON m.id = ti.movie_id 
 				INNER JOIN seat s ON s.id = ti.seat_id 
@@ -48,7 +52,7 @@ exports.getAll = async ( req, res ) =>
 			sql += ` AND LOWER(m.name) LIKE '%${ params?.name?.toLowerCase() }%'`
 		}
 
-		sql += ` GROUP BY m.id  ORDER BY m.release_date DESC  `;
+		sql += ` ORDER BY ti.id  DESC  `;
 		let query = sql + ` LIMIT ${ limit } OFFSET ${ offset }`
 		console.log( query );
 		db.query( query, [], async ( err, data ) =>

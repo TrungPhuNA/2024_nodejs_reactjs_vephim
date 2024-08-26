@@ -76,12 +76,10 @@ export const Orders = ( props ) =>
 								<tr>
 									<th>#</th>
 									<th className="text-nowrap">Khách hàng</th>
-									<th className="text-nowrap text-right">Tổng giá</th>
-									<th className="text-nowrap text-right">Tổng giảm giá</th>
-									<th className="text-nowrap text-center">Trạng thái</th>
-									<th className="text-nowrap text-center">Hình thức thanh toán</th>
-									<th className="text-nowrap text-center">Trạng thái thanh toán</th>
-									<th className="text-nowrap text-center">Trạng thái giao hàng</th>
+									<th className="text-nowrap text-right">Giá vé</th>
+									<th className="text-nowrap text-center">Thông tin phim</th>
+									<th className="text-nowrap text-center">Ghế</th>
+									<th className="text-nowrap text-center">Thông tin rạp</th>
 									<th className="text-nowrap text-center">Thời gian</th>
 									<th className="text-nowrap text-center">Thao tác</th>
 								</tr>
@@ -92,26 +90,50 @@ export const Orders = ( props ) =>
 									{
 										return (
 											< tr key={ key } className="table-product">
-												<td>{ item.code || item.id }</td>
+												<td>{ ( props.paging.page - 1 ) * props.paging.page_size + ( key + 1 ) }</td>
 												<td>
-													<span className="font-weight-bold">Tên tài khoản:</span><span> { item.receiver_name } <br /></span>
-													<span className="font-weight-bold">SĐT:</span><span> { item.receiver_phone } <br /></span>
+													<span className="font-weight-bold">Họ và tên:</span><span> { item.last_name + ' ' + item.first_name } <br /></span>
+													<span className="font-weight-bold">SĐT:</span><span> { item.phone_number } <br /></span>
+													<span className="font-weight-bold">Email:</span><span> { item.email } <br /></span>
 												</td>
-												<td className="text-right">{ customNumber( item.total_price, ',', '₫' ) }</td>
-												<td className="text-right">{ customNumber( item.total_discount, ',', '₫' ) }</td>
-												<td className="text-center">{ genStatus( item.status ) }</td>
-												<td className="text-center">{ genPaymentType( item.payment_type ) }</td>
-												<td className="text-center">{ genPaymentStatus( item.payment_status ) }</td>
-												<td className="text-center">{ genShippingStatus( item.shipping_status ) }</td>
+												<td className="text-right">{ customNumber( item.price, ',', '₫' ) }</td>
+												<td >
+													<ul style={{minWidth: '200px'}}>
+														<li>
+															<div className="d-flex justify-content-between">
+																<p className="text-nowrap mr-3  ">Tên phim: </p> 
+																<p className="font-weight-bold">{ item.movie_name }</p>
+															</div>
+														</li>
+														<li>
+															<div className="d-md-flex justify-content-between">
+																<p className="text-nowrap mr-3  ">Phòng: </p> 
+																<p className="font-weight-bold">{ item.hall_name }</p>
+															</div>
+														</li>
+
+
+													</ul>
+												</td>
+												<td className="text-center">{ item.seat_name }</td>
+												<td >
+													<ul>
+														<li>
+															<div className="d-md-flex justify-content-between">
+																<p className="text-nowrap  mr-3 ">Tên rạp: </p> <p className="font-weight-bold">{ item.theatre_name }</p>
+															</div>
+														</li>
+														<li>
+															<div className="d-md-flex justify-content-between">
+																<p className="text-nowrap  mr-3 ">Địa chỉ: </p> <p className="font-weight-bold">{ item.location }</p>
+															</div>
+														</li>
+
+													</ul>
+												</td>
+
 												<td className="text-center">
-													<div className="d-flex justify-content-between text-nowrap">
-														<p className="mr-2">Tạo: </p>
-														<p >{ customDate( item.created_at, 'DD/MM/yyyy' ) }</p>
-													</div>
-													<div className="d-flex justify-content-between text-nowrap">
-														<p className="mr-2">Cập nhật: </p>
-														<p >{ customDate( item.updated_at, 'DD/MM/yyyy' ) }</p>
-													</div>
+													{ customDate( item.movie_start_time, 'DD/MM/yyyy' ) }
 												</td>
 												<td className="text-center">
 
