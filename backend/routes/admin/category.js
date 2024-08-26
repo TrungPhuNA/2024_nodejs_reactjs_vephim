@@ -8,11 +8,13 @@ const user = require('../../app/controllers/user');
 const schedule = require('../../app/controllers/schedule');
 const hall = require('../../app/controllers/room');
 const booking = require('../../app/controllers/booking');
+const dashboard = require('../../app/controllers/dashboard');
 const authMiddleware = require('./../../app/common/adminAuthjwt');
 
 const isAuth = authMiddleware.roleGuards;
 
 router.get('/category',isAuth, authBuilder.getAll);
+router.get('/statistic',isAuth, dashboard.getAll);
 
 router.get('/movie',isAuth, movie.getAll);
 router.get('/movie/show/:id',isAuth, movie.show);

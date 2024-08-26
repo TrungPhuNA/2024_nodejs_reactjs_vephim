@@ -8,7 +8,7 @@ export const DASHBOARD_SERVICE = {
 		try {
 			let filters = buildFilter(params);
 			dispatch(toggleShowLoading(true))
-			const response = await getMethod('/admin/statistical', filters);
+			const response = await getMethod('/api/v1/admin/statistic', filters);
 			dispatch(toggleShowLoading(false))
 
 			// await timeDelay(2000);

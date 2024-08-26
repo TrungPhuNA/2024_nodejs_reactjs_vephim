@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-export const customNumber = ( number, formatValue, type ) =>
+export const customNumber = ( number, formatValue, type = '' ) =>
 {
 	if ( number )
 		return number.toString().replace( /\B(?=(\d{3})+(?!\d))/g, formatValue ) + type;

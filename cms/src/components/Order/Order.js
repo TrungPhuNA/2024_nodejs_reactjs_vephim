@@ -81,7 +81,7 @@ export const Orders = ( props ) =>
 									<th className="text-nowrap text-center">Ghế</th>
 									<th className="text-nowrap text-center">Thông tin rạp</th>
 									<th className="text-nowrap text-center">Thời gian</th>
-									<th className="text-nowrap text-center">Thao tác</th>
+									{/* <th className="text-nowrap text-center">Thao tác</th> */}
 								</tr>
 							</thead>
 							<tbody>
@@ -135,7 +135,7 @@ export const Orders = ( props ) =>
 												<td className="text-center">
 													{ customDate( item.movie_start_time, 'DD/MM/yyyy' ) }
 												</td>
-												<td className="text-center">
+												{/* <td className="text-center">
 
 													<UncontrolledDropdown group>
 														<DropdownToggle className="p-0" style={ { border: 'none', borderRadius: 'unset', background: 'none' } }>
@@ -151,7 +151,7 @@ export const Orders = ( props ) =>
 
 														</DropdownMenu>
 													</UncontrolledDropdown>
-												</td>
+												</td> */}
 											</tr>
 										)
 									}
@@ -171,7 +171,7 @@ export const Orders = ( props ) =>
 					</div>
 
 					{
-						props.paging.total > 0 &&
+						props.paging?.total > 0 &&
 						<div className="mx-auto d-flex justify-content-center my-4">
 							<Pagination
 								onChange={ e =>

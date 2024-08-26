@@ -121,9 +121,9 @@ const Header = ( props ) =>
 						<span className="small d-none d-sm-block ml-1 mr-2 body-1">{ localStorage.getItem( 'email' ) || getItem("full_name") }</span>
 					</DropdownToggle>
 					<DropdownMenu className="navbar-dropdown profile-dropdown" style={ { width: "194px" } }>
-						<NavLink href="/profile">
+						{/* <NavLink href="/profile">
 							<DropdownItem className={ s.dropdownProfileItem }><ProfileIcon /><span>Profile</span></DropdownItem>
-						</NavLink>
+						</NavLink> */}
 						<NavItem>
 							<NavLink onClick={ () => doLogout() } href="#">
 								<button className="btn btn-primary rounded-pill mx-auto mt-1" type="submit">

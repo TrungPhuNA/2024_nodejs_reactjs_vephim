@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import
 {
 	Col,
-	Row
+	Row,
+	Table
 } from "reactstrap";
 import Widget from "../../components/Widget/Widget.js";
 
@@ -16,6 +17,7 @@ import PipeChartApex from "../uielements/charts/components/PieChart.js";
 import ApexLineChart from "../uielements/charts/components/ApexLineChart.js";
 import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import Breadcrumbs from "../../components/Breadbrumbs/Breadcrumbs.js";
+import { customNumber } from "../../helpers/common/common.js";
 
 
 const Dashboard = () =>
@@ -90,7 +92,7 @@ const Dashboard = () =>
 							<div className={ s.smallWidget }>
 								<div className="d-md-flex align-items-center justify-content-md-between">
 									<p className="headline-2">Người dùng</p>
-									<p className="headline-2">{ data?.total_user || 0 } <i className="eva eva-people ml-2"></i></p>
+									<p className="headline-2">{customNumber(data?.total_customers || 0 , '.') } <i className="eva eva-people ml-2"></i></p>
 								</div>
 							</div>
 						</Widget>
@@ -99,8 +101,8 @@ const Dashboard = () =>
 						<Widget className="widget-p-sm bg-warning text-white">
 							<div className={ s.smallWidget }>
 								<div className="d-md-flex align-items-center justify-content-md-between">
-									<p className="headline-2">Phim</p>
-									<p className="headline-2"> { data?.total_product || 0 } <i className="eva eva-list ml-2"></i></p>
+									<p className="headline-2">Doanh số</p>
+									<p className="headline-2"> { customNumber(data?.total_amount || 0 , '.', 'đ')} <i className="eva eva-list ml-2"></i></p>
 								</div>
 							</div>
 						</Widget>
@@ -110,13 +112,58 @@ const Dashboard = () =>
 							<div className={ s.smallWidget }>
 								<div className="d-md-flex align-items-center justify-content-md-between">
 									<p className="headline-2">Số lượng vé đã đặt</p>
-									<p className="headline-2"> { data?.total_order || 0 } <i className="eva eva-layers ml-2"></i></p>
+									<p className="headline-2"> { customNumber(data?.total_tickets || 0 , '.') } <i className="eva eva-layers ml-2"></i></p>
 								</div>
 							</div>
 						</Widget>
 					</Col>
 				</Row>
-				<div className="gutter">
+				{
+					data?.tickets?.length > 0 && <Col className="pr-grid-col px-0" xs={ 12 } md={ 6 }>
+					<Widget>
+						<div className="headline-2 p-3">Số lượng vé theo phim</div>
+						<div className="widget-table-overflow p-3 mt-4">
+							<Table className={ `table-striped table-bordered table-hover ${ s.statesTable }` } responsive>
+								<thead>
+									<tr>
+										<th className="text-center">#</th>
+										<th className="text-nowrap">Tên phim</th>
+										<th className="text-nowrap">Số lượng vé đã bán</th>
+									</tr>
+								</thead>
+								<tbody>
+									{
+										data?.tickets?.length > 0 && data?.tickets.map( ( item, key ) =>
+										{
+											return (
+												< tr key={ key } className="table-product">
+													<td className="text-gray-900 text-center">
+														{item.movie_id}
+													</td>
+													
+													<td className="text-gray-900">
+														<span className="text-break" style={ { minWidth: '300px' } }>
+															{ item.name }
+														</span>
+													</td>
+
+													<td className="text-gray-900 text-right">
+														<span className="text-break ">
+															{ customNumber(item.tickets_per_movie || 0, '.', '') }
+														</span>
+													</td>
+												</tr>
+											)
+										}
+										) }
+								</tbody>
+							</Table>
+						</div>
+					</Widget >
+				</Col>
+				}
+				
+				{/* <div className="gutter">
 
 					<Widget className="widget-p-lg">
 						<div className="align-items-center row mb-3 p-2">
@@ -148,7 +195,7 @@ const Dashboard = () =>
 						</Row>
 					</Widget>
 
-				</div>
+				</div> */}
 
 			</Col>
 		</Row >
