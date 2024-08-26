@@ -62,9 +62,9 @@ export const Orders = ( props ) =>
 	return (
 		<>
 			<Widget>
-				<div className="p-5">
+				{/* <div className="p-5">
 					<OrderSearch { ...props } />
-				</div>
+				</div> */}
 			</Widget >
 			<Widget>
 
