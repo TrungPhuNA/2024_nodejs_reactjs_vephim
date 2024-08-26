@@ -91,12 +91,13 @@ export const ProductForm = ( props ) =>
 			// 	}, file )
 			// }
 			// setFiles( file )
-			console.log(product.genres?.split(', '));
+			console.log( product.genres?.split( ', ' ) );
 			let formValue = {
 				name: product.name,
-				genre: product.genres?.split(', '),
+				genre: product.genres,
 				language: product.language,
 				synopsis: product.synopsis,
+				directors: product.directors,
 				rating: product.rating,
 				duration: product.duration,
 				top_cast: product.top_cast,
@@ -127,7 +128,7 @@ export const ProductForm = ( props ) =>
 				}
 				return newCate
 			}, [] );
-			console.log(category);
+			console.log( category );
 			setCategories( category );
 		}
 	}
@@ -142,7 +143,7 @@ export const ProductForm = ( props ) =>
 		types: {
 			email: '${label} không đúng định dạng email',
 			number: '${label} không đúng định dạng số',
-			max: '${label} tối đa 100'
+			maxLength: '${label} có độ dài không hợp lệ'
 		},
 		number: {
 			range: '${label} trong khoảng ${min} - ${max}',
@@ -219,19 +220,25 @@ export const ProductForm = ( props ) =>
 							<Form.Item name="name" label="Tên phim"
 								rules={ [ { required: true } ] }
 								className=' d-block'>
-								<Input className='form-control' placeholder='Nhập tên' />
+								<Input className='form-control' placeholder='Nhập giá trị' />
 							</Form.Item>
 
 							<Form.Item name="genre" label="Danh mục"
 								rules={ [ { required: true } ] } className='d-block'>
-								<Select
+								<Input className='form-control' placeholder='Nhập giá trị' />
+								{/* <Select
 									placeholder="Chọn danh mục"
 									showSearch
 									filterOption={ ( input, option ) => ( option?.label?.toLowerCase() ).includes( input?.toLowerCase() ) }
 
 									style={ { width: '100%' } }
 									options={ categories }
-								/>
+								/> */}
+							</Form.Item>
+							<Form.Item name="directors" label="Directors"
+								rules={ [ { required: true } ] } className='d-block'>
+								<Input className='form-control' placeholder='Nhập giá trị' />
+								
 							</Form.Item>
 							<Form.Item name="image_path" label="Hình ảnh"
 								rules={ [ { required: true } ] }
@@ -276,29 +283,31 @@ export const ProductForm = ( props ) =>
 							<Form.Item name="top_cast" label="Diễn viên"
 								rules={ [ { required: true } ] }
 								className=' d-block'>
-								<Input.TextArea rows={ 5 } className='form-control' placeholder='Nhập giá trị' />
+								<Input  maxLength={30} className='form-control' placeholder='Nhập giá trị' />
 							</Form.Item>
 							<div className='row'>
 								<div className='col-md-4'>
 									<Form.Item name="duration" label="Thời lượng"
 										rules={ [ { required: true } ] }
 										className='d-block'>
-										<Input className='form-control' placeholder='Nhập giá trị' />
+										<Input className='form-control' maxLength={10} placeholder='Nhập giá trị' />
 									</Form.Item>
 								</div>
 								<div className='col-md-4' >
 									<Form.Item name="rating" label="Rating"
+										rules={ [ { required: true } ] }
 										className='d-block'>
-										<Input type='number'  className='form-control' placeholder='Nhập giá trị' />
+										<Input type='number' className='form-control' max={10} placeholder='Nhập giá trị' />
 									</Form.Item>
 								</div>
 								<div className='col-md-4'>
 									<Form.Item name="release_date" label="Ngày chiếu"
+										rules={ [ { required: true } ] }
 										className=' d-block'>
 										<Input className='form-control' type='date' placeholder='Chọn giá trị' />
 									</Form.Item>
 								</div>
-								
+
 
 							</div>
 

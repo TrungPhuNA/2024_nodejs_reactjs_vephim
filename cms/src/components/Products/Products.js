@@ -59,6 +59,7 @@ export const Products = ( props ) =>
 									<th className="text-nowrap">Tóm tắt</th>
 									<th className="text-nowrap">Rating</th>
 									<th className="text-nowrap">Danh mục</th>
+									<th className="text-nowrap">Directors</th>
 									<th className="text-nowrap">Thời lượng</th>
 									<th className="text-nowrap">Top Cast</th>
 									<th className="text-nowrap">Ngày chiếu</th>
@@ -94,6 +95,11 @@ export const Products = ( props ) =>
 												<td className="text-gray-900 text-break">
 													<p style={ { minWidth: "200px" } }>
 														{ item?.genres }
+													</p>
+												</td>
+												<td className="text-gray-900 text-break">
+													<p style={ { minWidth: "200px" } }>
+														{ item?.directors }
 													</p>
 												</td>
 

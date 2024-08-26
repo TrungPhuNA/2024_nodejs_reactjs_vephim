@@ -12,6 +12,9 @@ router.get('/category',isAuth, authBuilder.getAll);
 
 router.get('/movie',isAuth, movie.getAll);
 router.get('/movie/show/:id',isAuth, movie.show);
+router.put('/movie/update/:id',isAuth, movie.update);
+router.post('/movie/store',isAuth, movie.create);
+router.delete('/movie/delete/:id',isAuth, movie.show);
 
 router.get('/user',isAuth, user.getAll);
 router.get('/user/show/:id',isAuth, user.show);

@@ -63,6 +63,7 @@ const Sidebar = ( props ) =>
 				/>
 			} else
 			{
+				console.log(item);
 				return <LinksGroup
 					key={item.key}
 					onActiveSidebarItemChange={ activeItem => props.dispatch( changeActiveSidebarItem( activeItem ) ) }

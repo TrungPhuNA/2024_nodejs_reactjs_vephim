@@ -81,23 +81,24 @@ export const SIDE_BARS = [
 		// 	},
 		// ]
 	},
-	// {
-	// 	path: '/slide',
-	// 	icon: 'eva eva-menu',
-	// 	title: 'Slide',
-	// 	children: [
-	// 		{
-	// 			path: '/slide/list',
-	// 			title: 'Danh sách',
-	// 			icon: '',
-	// 		},
-	// 		{
-	// 			path: '/slide/create',
-	// 			icon: '',
-	// 			title: 'Thêm mới',
-	// 		},
-	// 	]
-	// },
+	{
+		path: '/room',
+		icon: 'eva eva-bookmark',
+		title: 'Phòng chiếu',
+		key: -1 
+		// children: [
+		// 	// {
+		// 	// 	path: '/slide/list',
+		// 	// 	title: 'Danh sách',
+		// 	// 	icon: '',
+		// 	// },
+		// 	// {
+		// 	// 	path: '/slide/create',
+		// 	// 	icon: '',
+		// 	// 	title: 'Thêm mới',
+		// 	// },
+		// ]
+	},
 	// {
 	// 	path: '/menu/list',
 	// 	icon: 'eva eva-bookmark',

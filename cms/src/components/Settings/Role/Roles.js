@@ -21,7 +21,7 @@ export const Roles = ( props ) =>
 	const [ listData, setListData ] = useState( [] );
 	const [ paging, setPaging ] = useState( {
 		page: 1,
-		page_size: 20
+		page_size: 10
 	} );
 	const [ params, setParams ] = useState( {} );
 	const dispatch = useDispatch();
@@ -54,7 +54,7 @@ export const Roles = ( props ) =>
 			if ( rs && rs.status === 'success' )
 			{
 				message.success( 'Xóa thành công!' );
-				await getListData( { page: 1, page_size: 20 } );
+				await getListData( { page: 1, page_size: 10 } );
 
 			} else
 			{

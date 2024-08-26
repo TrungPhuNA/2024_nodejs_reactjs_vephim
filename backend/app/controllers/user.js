@@ -181,6 +181,7 @@ exports.create = async ( req, res ) =>
 				db.query( sqlUser, [email, firstName, lastName, password, phoneNumber, body?.person_type || 'Customer'], async ( err, data ) =>
 				{
 					if ( err ) return buildResponseException( res, 400, err );
+					
 					return buildResponse( res, {
 						user: body,
 					} )

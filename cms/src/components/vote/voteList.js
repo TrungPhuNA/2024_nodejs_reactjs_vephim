@@ -21,7 +21,7 @@ export const PageVoting = () =>
 
 	const [ paging, setPaging ] = useState( {
 		page: 1,
-		page_size: 20,
+		page_size: 10,
 		total: 0
 	} );
 
@@ -63,7 +63,7 @@ export const PageVoting = () =>
 		if ( response?.status === 'success' || response?.status === 'success' )
 		{
 			message.success( 'Xóa đánh giá thành công!' );
-			await getDataList( { page: 1, page_size: 20 } ).then( r => { } );
+			await getDataList( { page: 1, page_size: 10 } ).then( r => { } );
 		} else
 		{
 			message.error( response?.message || 'Xóa đánh giá thất bại!' );

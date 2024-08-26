@@ -30,7 +30,7 @@ import { getItem } from "./services/common";
 
 const App = ( props ) =>
 {
-	
+	console.log(props);
 	return (
 		<BrowserRouter>
 			<Loading />
@@ -40,6 +40,7 @@ const App = ( props ) =>
 				<Route path="/register" exact component={ Register } />
 				<Route path="/" exact render={ () => <Redirect to="/dashboard" /> } />
 				<Route path="/movie" exact render={ () => <Redirect to="/movie/list" /> } />
+				<Route path="/room" exact render={ () => <Redirect to="/room/list" /> } />
 				<Route path="/user" exact render={ () => <Redirect to="/user/list" /> } />
 				<Route path="/category" exact render={ () => <Redirect to="/category/list" /> } />
 				<Route path="/order" exact render={ () => <Redirect to="/order/list" /> } />

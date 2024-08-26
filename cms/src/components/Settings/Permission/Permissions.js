@@ -21,7 +21,7 @@ export const Permissions = ( props ) =>
 	const [ listData, setListData ] = useState( [] );
 	const [ paging, setPaging ] = useState( {
 		page: 1,
-		page_size: 20
+		page_size: 10
 	} );
 	const [ params, setParams ] = useState( {} );
 	const [ group, setGroup ] = useState( [] );
@@ -46,7 +46,7 @@ export const Permissions = ( props ) =>
 			setListData( [] );
 			setPaging( {
 				page: 1,
-				page_size: 20
+				page_size: 10
 			} )
 		}
 		dispatch( toggleShowLoading( false ) );
