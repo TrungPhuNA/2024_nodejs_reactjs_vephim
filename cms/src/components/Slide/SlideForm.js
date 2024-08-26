@@ -9,13 +9,13 @@ import { useForm } from 'antd/lib/form/Form';
 import { toSlug } from '../../helpers/common/common';
 import { PlusOutlined } from '@ant-design/icons';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
-import { showData, submitForms } from '../../services/slideService';
+import { showData, SlideService, submitForms } from '../../services/slideService';
 import { buildImage } from '../../services/common';
 import Breadcrumbs from '../Breadbrumbs/Breadcrumbs';
 export const SlideForm = ( props ) =>
 {
 	const [ form ] = useForm();
-	const [ status, setStatus ] = useState( [] );
+	const [ listData, setListData ] = useState( [] );
 	const [ files, setFiles ] = useState( [] );
 	const [ data, setData ] = useState( null );
 	const dispatch = useDispatch();
@@ -25,10 +25,7 @@ export const SlideForm = ( props ) =>
 
 	useEffect( () =>
 	{
-		setStatus( [
-			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
-		] );
+		getDataTheatres()
 	}, [] );
 
 	useEffect( () =>
@@ -45,21 +42,12 @@ export const SlideForm = ( props ) =>
 	{
 		if ( data )
 		{
-			let file = [];
-			file.push( {
-				uid: file.length,
-				name: data.avatar,
-				status: 'done',
-				url:  buildImage(data.avatar),
-				default: true
-			} );
+			
 			let formValue = {
 				name: data.name,
-				status: data.status,
-				link: data.link,
-				image: file
+				theatre_id: data.theatre_id,
+				total_seats: data.total_seats,
 			}
-			setFiles(file)
 			form.setFieldsValue( formValue )
 
 		}
@@ -69,12 +57,26 @@ export const SlideForm = ( props ) =>
 	{
 		await showData( id, setData );
 	}
+	const getDataTheatres = async (  ) =>
+	{
+		const response = await SlideService.getListTheatres({page: 1, page_size:10000});
+		console.log(response);
+		if(response?.status == 'success') {
+			let data =response?.data?.theatres?.map((item) => {
+				item.value = item.id;
+				item.label = item.name;
+				return item;
+			});
+			setListData(data);
+		}
+	}
 
 	const validateMessages = {
 		required: '${label} không được để trống!',
 		types: {
 			email: '${label} không đúng định dạng email',
 			number: '${label} không đúng định dạng số',
+			min: '${label} lớn hơn 0',
 		},
 		number: {
 			range: '${label} trong khoảng ${min} - ${max}',
@@ -119,8 +121,8 @@ export const SlideForm = ( props ) =>
 
 	const routes = [
 		{
-			name: 'Slide',
-			route: '/slide/list'
+			name: 'Phòng chiếu',
+			route: '/room/list'
 		},
 		{
 			name: id ? 'Cập nhật' : 'Tạo mới',
@@ -130,72 +132,55 @@ export const SlideForm = ( props ) =>
 
 	return (
 		<>
-			<Breadcrumbs routes={ routes } title={ "Slide" } />
-		<div className="w-75 mx-auto">
-			<Widget>
-				<Form
-					className='p-3'
-					name='nest-messages form'
-					form={ form }
-					onFinish={ submitForm }
-					onFieldsChange={ onFieldsChange }
-					validateMessages={ validateMessages }
-				>
-					<div className='mb-3'>
-						<Form.Item name="name" label="Tên"
-							rules={ [ { required: true } ] }
-							className=' d-block'>
-							<Input className='form-control' placeholder='Nhập tên' />
-						</Form.Item>
+			<Breadcrumbs routes={ routes } title={ "Phòng chiếu" } />
+			<div className="w-75 mx-auto">
+				<Widget>
+					<Form
+						className='p-3'
+						name='nest-messages form'
+						form={ form }
+						onFinish={ submitForm }
+						onFieldsChange={ onFieldsChange }
+						validateMessages={ validateMessages }
+					>
+						<div className='mb-3'>
+							<Form.Item name="name" label="Tên phòng"
+								rules={ [ { required: true } ] }
+								className=' d-block'>
+								<Input className='form-control' maxLength={10} placeholder='Nhập giá trị' />
+							</Form.Item>
 
-						<Form.Item name="link" label="Link"
-							rules={ [ { required: true } ] }
-							className=' d-block'>
-							<Input className='form-control' placeholder='Nhập link' />
-						</Form.Item>
-						<Form.Item
-							label="Avatar"
-							name="image"
-							accept="images/**"
-							className='d-block'
-							valuePropName="fileList"
-							fileList={ files }
-							getValueFromEvent={ normFile }
-						>
-							<Upload action="/upload" listType="picture-card">
-								{ files.length < 1 && <div>
-									<PlusOutlined />
-									<div style={ { marginTop: 8 } }>Upload</div>
-								</div> }
-							</Upload>
-						</Form.Item>
+							<Form.Item name="total_seats" label="Số lượng vé"
+								rules={ [ { required: true } ] }
+								className=' d-block'>
+								<Input type='number' min={ 0 } className='form-control' placeholder='Nhập giá trị' />
+							</Form.Item>
 
-						
-						<Form.Item name="status" label="Trạng thái"
-							rules={ [ { required: true } ] } className='d-block'>
-							<Select
-								placeholder="Chọn trạng thái"
-								style={ { width: '100%' } }
-								options={ status }
-							/>
-						</Form.Item>
+							<Form.Item name="theatre_id" label="Rạp chiếu phim"
+								rules={ [ { required: true } ] } className='d-block'>
+								<Select
+									placeholder="Chọn giá trị"
+									style={ { width: '100%' } }
+									options={ listData }
+								/>
+							</Form.Item>
 
-						
 
-					</div>
 
-					<div className='d-flex justify-content-center'>
-						<button type="submit" className="btn btn-primary text-center" style={ { marginRight: 10, padding: '10px 10px' } }>
-							{ !id && 'Tạo mới' || 'Cập nhật' }
-						</button>
+						</div>
 
-						{ !id && <button type="button" className="btn btn-secondary text-center" style={ { marginLeft: 10, padding: '10px 10px' } } onClick={ resetForm }>
-							Reset
-						</button> }
-					</div>
-				</Form>
-			</Widget >
-		</div></>
+						<div className='d-flex justify-content-center'>
+							<button type="submit" className="btn btn-primary text-center" style={ { marginRight: 10, padding: '10px 10px' } }>
+								{ !id && 'Tạo mới' || 'Cập nhật' }
+							</button>
+
+							{ !id && <button type="button" className="btn btn-secondary text-center" style={ { marginLeft: 10, padding: '10px 10px' } } onClick={ resetForm }>
+								Reset
+							</button> }
+						</div>
+					</Form>
+				</Widget >
+			</div></>
 
 	)
 }

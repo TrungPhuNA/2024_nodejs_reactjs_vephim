@@ -35,15 +35,15 @@ export const SlidesContainer = () =>
 		dispatch( toggleShowLoading( false ) );
 		if ( rs )
 		{
-			setDatas( rs.slides );
+			setDatas( rs.rooms );
 			setPaging( rs.meta );
 		}
 	}
 
 	const routes = [
 		{
-			name: 'Slide',
-			route: '/slide/list'
+			name: 'Phòng chiếu',
+			route: '/room/list'
 		},
 		{
 			name: 'Danh sách',
@@ -68,7 +68,7 @@ export const SlidesContainer = () =>
 
 	return (
 		<>
-			<Breadcrumbs routes={ routes } title={ "Slide" } /> <SlidesPage
+			<Breadcrumbs routes={ routes } title={ "Phòng chiếu" } /> <SlidesPage
 				datas={ datas }
 				paging={ paging }
 				params={ params }

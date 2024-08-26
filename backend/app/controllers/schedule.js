@@ -205,3 +205,35 @@ exports.create = async ( req, res ) =>
 		return buildResponseException( res, 400, e );
 	}
 };
+
+
+exports.deleteById = async ( req, res ) =>
+	{
+	
+		try
+		{
+			let id = req.params?.id;
+			let sqlId =
+				`DELETE FROM showtimes where id='${ id }' 
+					 `;
+			db.query( sqlId, [], async ( err, data ) =>
+			{
+				console.log( sqlId );
+	
+				if ( err )
+				{
+					if ( err ) return buildResponseException( res, 400, err );
+	
+				}
+				else {
+	
+					return buildResponse( res, {} );
+				}
+			} );
+	
+	
+		} catch ( e )
+		{
+			return buildResponseException( res, 400, e );
+		}
+	};

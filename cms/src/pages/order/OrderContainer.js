@@ -28,7 +28,7 @@ export const OrderContainer = () =>
 	}
 	const routes = [
 		{
-			name: 'Đơn hàng',
+			name: 'Đặt vé',
 			route: '/order'
 		},
 		{
@@ -37,7 +37,7 @@ export const OrderContainer = () =>
 		},
 	]
 	return ( <>
-		<Breadcrumbs routes={ routes } title={ "Đơn hàng" } />
+		<Breadcrumbs routes={ routes } title={ "Đặt vé" } />
 		<Orders
 			orders={ orders }
 			paging={ paging }

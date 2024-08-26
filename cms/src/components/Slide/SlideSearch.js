@@ -59,13 +59,13 @@ export const SlideSearch = ( props ) =>
 		>
 			<div className="row mb-1">
 				<div className="col-md-3 mb-2 form-group">
-					<Form.Item name="id" label="id" className='mb-0 d-block'>
-						<Input className='form-control' placeholder='Nhập Id' />
+					<Form.Item name="theatre_name" label="Tên rạp" className='mb-0 d-block'>
+						<Input className='form-control' placeholder='Nhập giá trị' />
 					</Form.Item>
 				</div>
 				<div className="col-md-3 mb-2 form-group">
-					<Form.Item name="name" label="Tên" className='mb-0 d-block'>
-						<Input className='form-control' placeholder='Nhập tên' />
+					<Form.Item name="name" label="Phòng" className='mb-0 d-block'>
+						<Input className='form-control' placeholder='Nhập giá trị' />
 					</Form.Item>
 				</div>
 				{/* <div className="col-md-3 mb-2">

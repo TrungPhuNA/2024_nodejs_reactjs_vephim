@@ -7,11 +7,11 @@ import { message } from "antd";
 
 export const getOrders = async (params) => {
 	let filters = buildFilter(params);
-	return await getMethod('/admin/order', filters);
+	return await getMethod('/api/v1/admin/order', filters);
 }
 
 export const showOrderInfo = async (id, params) => {
-	return await getMethod(`/admin/order/show/${id}`, params);
+	return await getMethod(`/api/v1/admin/order/show/${id}`, params);
 }
 
 export const getOrdersByFilter = async (params, setOrders, setPaging, dispatch) => {
@@ -60,5 +60,5 @@ export const getOrderById = async (id, setOrderInfo, dispatch) => {
 
 export const updateOrder = async (id, data) => {
 	await timeDelay(1000)
-	return await putMethod('/admin/order/update/'+id, data);
+	return await putMethod('/api/v1/admin/order/update/'+id, data);
 }

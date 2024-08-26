@@ -11,31 +11,35 @@ export const getSlides = async ( params ) =>
 
 export const show = async ( id, params ) =>
 {
-	return await getMethod( `/admin/slide/show/${ id }`, params );
+	return await getMethod( `/api/v1/admin/slide/show/${ id }`, params );
 }
 
 export const SlideService = {
 	async getList(params) {
 		let filter = buildFilter( params );
-		return await getMethod( '/admin/slide', filter );
+		return await getMethod( '/api/v1/admin/hall', filter );
 	},
 	async show(id) {
-		return await getMethod( `/admin/slide/show/${ id }` );
+		return await getMethod( `/api/v1/admin/hall/show/${ id }` );
 	},
 	async create ( data )
 	{
-		return await postMethod( `/admin/slide/store`, data );
+		return await postMethod( `/api/v1/admin/hall/store`, data );
 	},
 
 	async update ( id, data )
 	{
-		return await putMethod( `/admin/slide/update/${ id }`, data );
+		return await putMethod( `/api/v1/admin/hall/update/${ id }`, data );
 	},
 
 	async delete ( id )
 	{
-		return await deleteMethod( `/admin/slide/delete/${ id }` );
-	}
+		return await deleteMethod( `/api/v1/admin/hall/delete/${ id }` );
+	},
+	async getListTheatres(params) {
+		let filter = buildFilter( params );
+		return await getMethod( '/api/v1/admin/theatre', filter );
+	},
 }
 
 
@@ -102,9 +106,9 @@ export const submitForms = async ( id = null, files, e, dispatch, history ) =>
 		}
 		if ( response?.status === 'success' )
 		{
-			message.success( `${id && 'Cập nhật' || 'Tạo mới'} slide successfully!` );
+			message.success( `${id && 'Cập nhật' || 'Tạo mới'}  successfully!` );
 			await timeDelay( 500 );
-			history.push( '/slide/list' );
+			history.push( '/room/list' );
 		} else if ( response?.status === 'fail' && response?.data )
 		{
 			let error = Object.entries( response?.data ) || [];

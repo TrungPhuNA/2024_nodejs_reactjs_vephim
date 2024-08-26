@@ -77,13 +77,13 @@ export const DiscountForm = ( props ) =>
 	}
 
 	const validateMessages = {
-		required: '${label} is required!',
+		required: '${label} không được để trống!',
 		types: {
-			email: '${label} is not a valid email!',
-			number: '${label} is not a valid number!',
+			email: '${label} không đúng định dạng email',
+			number: '${label} không đúng định dạng số',
 		},
 		number: {
-			range: '${label} must be between ${min} and ${max}',
+			range: '${label} trong khoảng ${min} - ${max}',
 		},
 	};
 

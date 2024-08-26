@@ -7,7 +7,7 @@ import
 import Widget from "../Widget/Widget.js";
 
 import s from "../../pages/tables/Tables.js";
-import { customDate } from "../../helpers/common/common.js";
+import { customDate, customNumber } from "../../helpers/common/common.js";
 import { Pagination } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom.min.js";
 import { DEFAUT_IMG, EMPTY_IMG } from "../../helpers/constant/image.js";
@@ -32,7 +32,7 @@ export const SlidesPage = ( props ) =>
 			<Widget>
 				<div className="p-5">
 					<div className="mb-3">
-						<Link to="/slide/create" className="btn btn-info">
+						<Link to="/room/create" className="btn btn-info">
 							<span className="d-flex align-items-center"><i className="eva eva-plus mr-2"></i> Thêm mới</span>
 						</Link>
 					</div>
@@ -44,13 +44,11 @@ export const SlidesPage = ( props ) =>
 					<Table className={ `table-striped table-bordered table-hover ${ s.statesTable }` } responsive>
 						<thead>
 							<tr>
-								<th>#</th>
-								<th className="text-nowrap">Hình ảnh</th>
-								<th className="text-nowrap">Tiêu đề</th>
-								<th className="text-nowrap">Link</th>
-								{/* <th className="text-nowrap">Hot</th> */ }
-								<th className="text-nowrap">Trạng thái</th>
-								<th className="text-nowrap">Thời gian</th>
+								<th className="text-center">#</th>
+								<th className="text-nowrap">Tên phòng</th>
+								<th className="text-nowrap">Tên rạp</th>
+								<th className="text-nowrap">Địa chỉ rạp</th>
+								<th className="text-nowrap">Số lượng vé</th>
 								<th className="text-nowrap text-center">Thao tác</th>
 							</tr>
 						</thead>
@@ -62,27 +60,19 @@ export const SlidesPage = ( props ) =>
 										< tr key={ key } className="table-product">
 											<td className="text-gray-900 text-center">{ ( props.paging.page - 1 ) * props.paging.page_size + ( key + 1 ) }</td>
 											<td className="d-flex align-items-center">
-												<img width="70" height="70"
-													id={ key }
-													style={ { border: "0.5px solid gray", borderRadius: '5px' } }
-													src={ buildImage( item.avatar ) } alt={ item.name } onError={ onErrorImage } />
-											</td>
-											<td className="text-gray-900">
 												<span className="text-break" style={ { minWidth: '100px' } }>{ item.name }</span>
 											</td>
 											<td className="text-gray-900">
-												<a href={ item.link || '#' } target="_blank" className="text-break" style={ { minWidth: '100px' } }>{ item.link }</a>
+												<span className="text-break" style={ { minWidth: '100px' } }>{ item.theatre_name }</span>
 											</td>
-											{/* <td className="text-gray-900">
-												{ item.hot === 1 && <span className="text-danger">Hot</span> }
-											</td>*/}
-											<td className="text-gray-900">{ genStatus( item.status ) }</td>
-											<td className="text-gray-900 text-nowrap">
-												{ customDate( item.created_at, 'DD/MM/yyyy' ) }
+											<td className="text-gray-900">
+												<span className="text-break" style={ { minWidth: '100px' } }>{ item.theatre_location }</span>
 											</td>
+											<td className="text-gray-900">{ customNumber( item.total_seats, '.', '' ) }</td>
+											
 											<td>
 												<div className="d-flex justify-content-center align-items-center">
-													<Link to={ `/slide/edit/${ item.id }` } className="d-flex justify-content-center">
+													<Link to={ `/room/edit/${ item.id }` } className="d-flex justify-content-center">
 														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
 													</Link>
 													{/* <DeleteOutlined

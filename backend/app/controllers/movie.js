@@ -21,7 +21,8 @@ exports.getAll = async ( req, res ) =>
 		let limit = params?.page_size || 10;
 
 		let sql =
-			`SELECT m.*, NULLIF(GROUP_CONCAT(DISTINCT d.director SEPARATOR ', '), '') AS directors,
+			`SELECT m.*,
+				 NULLIF(GROUP_CONCAT(DISTINCT d.director SEPARATOR ', '), '') AS directors,
     			NULLIF(GROUP_CONCAT(DISTINCT g.genre SEPARATOR ', '), '') AS genres  FROM movie m 
 				INNER JOIN movie_genre g ON m.id = g.movie_id 
 				INNER JOIN movie_directors d ON m.id = d.movie_id 
@@ -42,7 +43,7 @@ exports.getAll = async ( req, res ) =>
 		db.query( query, [], async ( err, data ) =>
 		{
 			if ( err ) return buildResponseException( res, 400, err );
-			let sqlTotal = `SELECT COUNT(*) as total FROM (${sql}) as data `
+			let sqlTotal = `SELECT COUNT(*) as total FROM (${ sql }) as data `
 			if ( params?.category_id )
 			{
 				sqlTotal += ` AND LOWER(g.genre) LIKE '%${ params?.category_id?.toLowerCase() }%'`
@@ -245,14 +246,47 @@ exports.create = async ( req, res ) =>
 						{
 							await movieService.createGenre( req, res, data2[ 0 ]?.last_id )
 						}
-						
-					} 
+
+					}
 					return buildResponse( res, {
 						product: data2[ 0 ],
 					} );
 				} );
 			}
 		);
+
+
+	} catch ( e )
+	{
+		return buildResponseException( res, 400, e );
+	}
+};
+
+exports.deleteById = async ( req, res ) =>
+{
+
+	try
+	{
+		let id = req.params?.id;
+		let sqlId =
+			`DELETE FROM movie where id='${ id }' 
+				 `;
+		db.query( sqlId, [], async ( err, data ) =>
+		{
+			console.log( sqlId );
+
+			if ( err )
+			{
+				if ( err ) return buildResponseException( res, 400, err );
+
+			}
+			else {
+
+				movieService.deleteGenre(req, res);
+				movieService.deleteGenre(req, res);
+				return buildResponse( res, {} );
+			}
+		} );
 
 
 	} catch ( e )
