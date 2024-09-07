@@ -34,7 +34,7 @@ router.get('/hall',isAuth, hall.getAll);
 router.get('/hall/show/:id',isAuth, hall.show);
 router.put('/hall/update/:id',isAuth, hall.update);
 router.post('/hall/store',isAuth, hall.create);
-router.delete('/hall/delete/:id',isAuth, hall.show);
+router.delete('/hall/delete/:id',isAuth, hall.deleteById);
 
 
 router.get('/theatre',isAuth, hall.getAllTheatre);
@@ -47,6 +47,7 @@ router.get('/order',isAuth, booking.getAll);
 router.get('/order/show/:id',isAuth, booking.show);
 router.put('/order/update/:id',isAuth, booking.update);
 router.post('/order/store',isAuth, booking.create);
+router.delete('/order/delete/:id',isAuth, booking.deleteById);
 
 router.get('/user',isAuth, user.getAll);
 router.get('/user/show/:id',isAuth, user.show);

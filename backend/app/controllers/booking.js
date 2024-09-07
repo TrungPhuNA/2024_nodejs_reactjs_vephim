@@ -21,15 +21,18 @@ exports.getAll = async ( req, res ) =>
 		let limit = params?.page_size || 10;
 
 		let sql =
-			`SELECT ti.price, ti.purchase_date, 
+			`SELECT ti.id, ti.price, ti.purchase_date, 
 				NULLIF(m.name, '') as movie_name, 
-				pe.*,
+				NULLIF(pe.first_name, '') as first_name,
+				NULLIF(pe.email, '') as email,
+				NULLIF(pe.last_name, '') as last_name,
+				NULLIF(pe.phone_number, '') as phone_number,
 				NULLIF(m.image_path, '') as image_path, 
 				NULLIF(s.name, '') as seat_name, 
 				NULLIF(h.name, '') as hall_name, 
 				NULLIF(th.name, '') as theatre_name,
 				NULLIF(sh.show_type, '') as show_type, 
-				NULLIF(sh.movie_start_time, ''), 
+				NULLIF(sh.movie_start_time, '') as movie_start_time, 
 				sh.showtime_date, 
 				th.location,
 				ti.payment_id 
@@ -284,7 +287,7 @@ exports.deleteById = async ( req, res ) =>
 	{
 		let id = req.params?.id;
 		let sqlId =
-			`DELETE FROM movie where id='${ id }' 
+			`DELETE FROM ticket where id='${ id }' 
 				 `;
 		db.query( sqlId, [], async ( err, data ) =>
 		{

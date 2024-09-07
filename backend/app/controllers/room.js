@@ -243,3 +243,36 @@ exports.getAllTheatre = async ( req, res ) =>
 		return buildResponseException( res, 400, e );
 	}
 };
+
+exports.deleteById = async ( req, res ) =>
+	{
+	
+		try
+		{
+			let id = req.params?.id;
+			let sqlId =
+				`DELETE FROM hall where id='${ id }' 
+					 `;
+			db.query( sqlId, [], async ( err, data ) =>
+			{
+				console.log( sqlId );
+	
+				if ( err )
+				{
+					if ( err ) return buildResponseException( res, 400, err );
+	
+				}
+				else {
+	
+					movieService.deleteGenre(req, res);
+					movieService.deleteGenre(req, res);
+					return buildResponse( res, {} );
+				}
+			} );
+	
+	
+		} catch ( e )
+		{
+			return buildResponseException( res, 400, e );
+		}
+	};

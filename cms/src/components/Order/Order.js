@@ -81,7 +81,7 @@ export const Orders = ( props ) =>
 									<th className="text-nowrap text-center">Ghế</th>
 									<th className="text-nowrap text-center">Thông tin rạp</th>
 									<th className="text-nowrap text-center">Thời gian</th>
-									{/* <th className="text-nowrap text-center">Thao tác</th> */}
+									<th className="text-nowrap text-center">Thao tác</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -111,8 +111,6 @@ export const Orders = ( props ) =>
 																<p className="font-weight-bold">{ item.hall_name }</p>
 															</div>
 														</li>
-
-
 													</ul>
 												</td>
 												<td className="text-center">{ item.seat_name }</td>
@@ -132,10 +130,10 @@ export const Orders = ( props ) =>
 													</ul>
 												</td>
 
-												<td className="text-center">
-													{ customDate( item.movie_start_time, 'DD/MM/yyyy' ) }
+												<td className="text-center text-nowrap">
+													{item.movie_start_time} - { customDate( item.showtime_date, 'DD/MM/yyyy' ) }
 												</td>
-												{/* <td className="text-center">
+												<td className="text-center">
 
 													<UncontrolledDropdown group>
 														<DropdownToggle className="p-0" style={ { border: 'none', borderRadius: 'unset', background: 'none' } }>
@@ -145,13 +143,13 @@ export const Orders = ( props ) =>
 															<DropdownItem href={ `view/${ item.id }` } className="text-nowrap pt-2">
 																Chi tiết
 															</DropdownItem>
-															<DropdownItem href={ `edit/${ item.id }` } className="text-nowrap pt-2">
-																Chỉnh sửa
+															<DropdownItem onClick={() => props.deleteById(item.id)} className="text-nowrap pt-2">
+																Xóa
 															</DropdownItem>
 
 														</DropdownMenu>
 													</UncontrolledDropdown>
-												</td> */}
+												</td>
 											</tr>
 										)
 									}

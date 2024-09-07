@@ -14,6 +14,11 @@ export const showOrderInfo = async (id, params) => {
 	return await getMethod(`/api/v1/admin/order/show/${id}`, params);
 }
 
+
+export const deleteOrderById = async (id) => {
+	return await deleteMethod(`/api/v1/admin/order/delete/${id}`);
+}
+
 export const getOrdersByFilter = async (params, setOrders, setPaging, dispatch) => {
 	try {
 		dispatch(toggleShowLoading(true))
