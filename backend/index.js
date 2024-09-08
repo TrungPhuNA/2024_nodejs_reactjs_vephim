@@ -229,7 +229,7 @@ ORDER BY S.id`;
 app.post("/payment", (req, res) => {
     const amount = req.body.amount;
     const email = req.body.email;
-    const paymentType = req.body.userPayMethod;
+    const paymentType = req.body.userPayMethod ?? 'DEFAULT';
 
     const sql1 =
         "INSERT INTO payment(amount,method,customer_email) VALUES(?,?,?)";

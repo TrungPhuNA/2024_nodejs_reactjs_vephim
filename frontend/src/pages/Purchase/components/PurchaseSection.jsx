@@ -40,6 +40,10 @@ export const PurchaseSection = () => {
         hall_id: userHallId,
         seat_price: userSeatPrice,
     } = useSelector((store) => store.cart);
+
+	const dataTest = useSelector((store) => store.cart);
+	console.log(dataTest);
+
     const dispatch = useDispatch();
 
     const formattedDate =
@@ -66,6 +70,7 @@ export const PurchaseSection = () => {
         seatsData.filter((seatData) => userSeatList.includes(seatData.seat_id));
 
     const handleTicketPurchase = async () => {
+		console.log(1);
         try {
             setBtnDisabled(true);
             setLoading(true);
@@ -81,8 +86,10 @@ export const PurchaseSection = () => {
                 }
             );
 
-            paymentID = paymentResponse.data && paymentResponse.data[0].last_id;
+			console.log("payment response-------> ", paymentResponse);
 
+            paymentID = paymentResponse.data && paymentResponse.data[0].last_id;
+			console.log("userSeatList--------> ", userSeatList);
             // Purchase tickets for each seat
             for (const seatId of userSeatList) {
                 await axios.post(`${import.meta.env.VITE_API_URL}/purchaseTicket`, {
@@ -105,20 +112,22 @@ export const PurchaseSection = () => {
             );
 
             setTicketIds(recentPurchaseResponse.data);
-
+			setBtnDisabled(false)
             // Clear user selection
             dispatch(resetCart());
         } catch (err) {
-            console.error(err);
+            console.error("erro---------> ", err);
             ticketPurchaseError();
+			setBtnDisabled(false)
         } finally {
             setLoading(false);
+			setBtnDisabled(false)
         }
     };
 
-    useEffect(() => {
-        userPayMethod.length > 0 ? setBtnDisabled(false) : setBtnDisabled(true);
-    }, [userPayMethod]);
+    // useEffect(() => {
+    //     userPayMethod.length > 0 ? setBtnDisabled(false) : setBtnDisabled(true);
+    // }, [userPayMethod]);
 
     useEffect(() => {
         const tickets = [];
@@ -455,9 +464,8 @@ export const PurchaseSection = () => {
                         </div>
 
                         <button
-                            className={btnDisabled ? "ticket-btn-disabled" : "ticket-btn"}
+                            className={"ticket-btn"}
                             onClick={handleTicketPurchase}
-                            disabled={btnDisabled}
                         >
                             {loading ? <BarLoader color="#e6e6e8"/> : "purchase ticket"}
                         </button>
