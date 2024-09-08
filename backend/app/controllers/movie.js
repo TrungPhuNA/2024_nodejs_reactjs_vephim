@@ -26,7 +26,7 @@ exports.getAll = async ( req, res ) =>
     			NULLIF(GROUP_CONCAT(DISTINCT g.genre SEPARATOR ', '), '') AS genres  FROM movie m 
 				INNER JOIN movie_genre g ON m.id = g.movie_id 
 				INNER JOIN movie_directors d ON m.id = d.movie_id 
-				WHERE TRUE 
+				WHERE TRUE AND m.is_deleted != 1   
 		 `;
 		if ( params?.category_id )
 		{
@@ -262,6 +262,57 @@ exports.create = async ( req, res ) =>
 	}
 };
 
+// exports.deleteById = async ( req, res ) =>
+// {
+
+// 	try
+// 	{
+// 		let id = req.params?.id;
+// 		let sqlId =
+// 			`
+// 			DELETE FROM ticket where movie_id='${ id }'; 
+// 			DELETE FROM movie_genre where movie_id='${ id }'; 
+// 			DELETE FROM movie_directors where movie_id='${ id }'; 
+// 			DELETE FROM show_in where movie_id='${ id }'; 
+// 			DELETE FROM movie where id='${ id }';
+// 				 `;
+// 		db.beginTransaction( ( err ) =>
+// 		{
+// 			if ( err )
+// 			{
+// 				console.log( "err1------> ", err );
+
+// 				return buildResponseException( res, 400, err );
+// 			}
+// 			db.promise().query( sqlId, [] )
+// 				.then( () =>
+// 				{
+// 					// Commit the transaction
+// 					return db.promise().commit();
+// 				} )
+// 				.then( () =>
+// 				{
+// 					// Successfully committed
+// 					console.log( "success" );
+// 					return buildResponse( res, {} );
+// 				} )
+// 				.catch( ( err1 ) =>
+// 				{
+// 					// Rollback on error
+// 					return buildResponseException( res, 400, err );
+
+// 				} );;
+// 		} );
+
+
+// 	} catch ( e )
+// 	{
+// 		console.log( "err------> ", e );
+// 		return buildResponseException( res, 400, e );
+// 	}
+// };
+
+
 exports.deleteById = async ( req, res ) =>
 {
 
@@ -269,8 +320,8 @@ exports.deleteById = async ( req, res ) =>
 	{
 		let id = req.params?.id;
 		let sqlId =
-			`DELETE FROM movie where id='${ id }' 
-				 `;
+			`Update movie set is_deleted=1 where id='${ id }' 
+					 `;
 		db.query( sqlId, [], async ( err, data ) =>
 		{
 			console.log( sqlId );
@@ -280,10 +331,35 @@ exports.deleteById = async ( req, res ) =>
 				if ( err ) return buildResponseException( res, 400, err );
 
 			}
-			else {
+			else
+			{
+				return buildResponse( res, {} );
+			}
+		} );
 
-				movieService.deleteGenre(req, res);
-				movieService.deleteGenre(req, res);
+
+	} catch ( e )
+	{
+		return buildResponseException( res, 400, e );
+	}
+};
+exports.alterAddColIsDelete = async ( req, res ) =>
+{
+
+	try
+	{
+		let sqlId =
+			`ALTER TABLE movie ADD COLUMN is_deleted INTEGER NULL DEFAULT 0`;
+		db.query( sqlId, [], async ( err, data ) =>
+		{
+
+			if ( err )
+			{
+				if ( err ) return buildResponseException( res, 400, err );
+
+			}
+			else
+			{
 				return buildResponse( res, {} );
 			}
 		} );

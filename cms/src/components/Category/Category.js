@@ -50,7 +50,7 @@ export const Categories = ( props ) =>
 								{/* <th className="text-nowrap">Slug</th>
 								<th className="text-nowrap">Trạng thái</th>
 								<th className="text-nowrap">Thời gian tạo</th> */}
-								{/* <th className="text-nowrap text-center">Thao tác</th> */}
+								<th className="text-nowrap text-center">Thao tác</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -60,24 +60,29 @@ export const Categories = ( props ) =>
 									return (
 										< tr key={ key } className="table-product">
 											<td className="text-gray-900 text-center">{ ( props.paging.page - 1 ) * props.paging.page_size + ( key + 1 ) }</td>
-											{/* <td className="d-flex align-items-center">
-												<img width="70" height="70"
-													id={ key }
-													style={ { border: "0.5px solid gray", borderRadius: '5px' } }
-													src={ buildImage( item.avatar ) } alt={ item.name } onError={ onErrorImage } />
-											</td> */}
+
 											<td className="text-gray-900">
 												<span className="text-break" style={ { minWidth: '100px' } }>
 													{ item.genre }
 												</span>
 											</td>
 
+											<td className="text-center">
+												<div className="d-flex justify-content-center align-items-center">
+													{/* <Link to={ `/movie/edit/${ item.id }` } className="d-flex justify-content-center">
+														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
+													</Link> */}
+													<DeleteOutlined
+														className="ml-2 cursor-pointer"
+														onClick={ () =>
+														{
+															props.deleteById( {movie_ids: item?.movie_ids} );
+														} }
+														style={ { fontSize: "16px", color: "red" } } />
 
-											{/* <td className="text-center">
-												<Link to={ `/category/edit/${ item.id }` }>
-													<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
-												</Link>
-											</td> */}
+
+												</div>
+											</td>
 										</tr>
 									)
 								}
@@ -100,7 +105,7 @@ export const Categories = ( props ) =>
 						<div className="mx-auto d-flex justify-content-center my-4">
 							<Pagination
 								onChange={ e =>
-									props.getList( { ...props.paging, page: e, ...props.params } )
+									props.getDatasByFilter( { ...props.paging, page: e, ...props.params } )
 								}
 								pageSize={ props.paging.page_size }
 								defaultCurrent={ props.paging.page }

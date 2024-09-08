@@ -100,6 +100,14 @@ export const UserCpn = ( props ) =>
 													<Link to={ `/user/edit/${ item.email }` } className="d-flex justify-content-center">
 														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
 													</Link>
+
+													<DeleteOutlined
+															className="ml-2 cursor-pointer"
+															onClick={ () =>
+															{
+																props.deleteById( item.email );
+															} }
+															style={ { fontSize: "16px", color: "red" } } />
 													
 												</div>
 											</td>

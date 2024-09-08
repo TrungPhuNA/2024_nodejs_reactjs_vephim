@@ -14,6 +14,9 @@ const authMiddleware = require('./../../app/common/adminAuthjwt');
 const isAuth = authMiddleware.roleGuards;
 
 router.get('/category',isAuth, authBuilder.getAll);
+router.post('/category/delete',isAuth, authBuilder.deleteById);
+router.put('/category/update/:id',isAuth, authBuilder.update);
+
 router.get('/statistic',isAuth, dashboard.getAll);
 
 router.get('/movie',isAuth, movie.getAll);
@@ -21,6 +24,7 @@ router.get('/movie/show/:id',isAuth, movie.show);
 router.put('/movie/update/:id',isAuth, movie.update);
 router.post('/movie/store',isAuth, movie.create);
 router.delete('/movie/delete/:id',isAuth, movie.deleteById);
+router.get('/movie/migrate', movie.alterAddColIsDelete);
 
 
 router.get('/schedule',isAuth, schedule.getAll);
@@ -53,5 +57,6 @@ router.get('/user',isAuth, user.getAll);
 router.get('/user/show/:id',isAuth, user.show);
 router.put('/user/update/:id',isAuth, user.update);
 router.post('/user/store',isAuth, user.create);
+router.delete('/user/delete/:id',isAuth, user.deleteById);
 module.exports = router;
 

@@ -78,8 +78,9 @@ exports.show = async ( req, res ) =>
 		console.log( sql );
 		db.query( sql, [], async ( err, data ) =>
 		{
-			if ( err ) {
-				console.log(err);
+			if ( err )
+			{
+				console.log( err );
 				return buildResponseException( res, 400, err );
 			}
 
@@ -245,34 +246,35 @@ exports.getAllTheatre = async ( req, res ) =>
 };
 
 exports.deleteById = async ( req, res ) =>
+{
+
+	try
 	{
-	
-		try
-		{
-			let id = req.params?.id;
-			let sqlId =
-				`DELETE FROM hall where id='${ id }' 
+		let id = req.params?.id;
+		let sqlId =
+			`DELETE FROM hall where id='${ id }' 
 					 `;
-			db.query( sqlId, [], async ( err, data ) =>
-			{
-				console.log( sqlId );
-	
-				if ( err )
-				{
-					if ( err ) return buildResponseException( res, 400, err );
-	
-				}
-				else {
-	
-					movieService.deleteGenre(req, res);
-					movieService.deleteGenre(req, res);
-					return buildResponse( res, {} );
-				}
-			} );
-	
-	
-		} catch ( e )
+		db.query( sqlId, [], async ( err, data ) =>
 		{
-			return buildResponseException( res, 400, e );
-		}
-	};
+			console.log( sqlId );
+
+			if ( err )
+			{
+				if ( err ) return buildResponseException( res, 400, err );
+
+			}
+			else
+			{
+
+				movieService.deleteGenre( req, res );
+				movieService.deleteGenre( req, res );
+				return buildResponse( res, {} );
+			}
+		} );
+
+
+	} catch ( e )
+	{
+		return buildResponseException( res, 400, e );
+	}
+};

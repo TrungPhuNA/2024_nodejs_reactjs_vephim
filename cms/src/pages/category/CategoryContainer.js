@@ -51,9 +51,9 @@ export const CategoryContainer = () =>
 		}
 	];
 
-	const deleteById = async (id) => {
+	const deleteById = async (data) => {
 		try {
-			const response = await Category.delete(id);
+			const response = await Category.delete(data);
 			if(response?.status === 'success') {
 				message.success('Xóa thành công');
 				await getDatasByFilter({...paging, ...params});

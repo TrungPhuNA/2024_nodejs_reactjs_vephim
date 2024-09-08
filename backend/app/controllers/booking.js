@@ -24,7 +24,7 @@ exports.getAll = async ( req, res ) =>
 			`SELECT ti.id, ti.price, ti.purchase_date, 
 				NULLIF(m.name, '') as movie_name, 
 				NULLIF(pe.first_name, '') as first_name,
-				NULLIF(pe.email, '') as email,
+				NULLIF(p.customer_email, '') as email,
 				NULLIF(pe.last_name, '') as last_name,
 				NULLIF(pe.phone_number, '') as phone_number,
 				NULLIF(m.image_path, '') as image_path, 
@@ -299,9 +299,6 @@ exports.deleteById = async ( req, res ) =>
 
 			}
 			else {
-
-				movieService.deleteGenre(req, res);
-				movieService.deleteGenre(req, res);
 				return buildResponse( res, {} );
 			}
 		} );

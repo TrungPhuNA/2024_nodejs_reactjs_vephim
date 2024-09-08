@@ -94,7 +94,7 @@ export const Orders = ( props ) =>
 												<td>
 													<span className="font-weight-bold">Họ và tên:</span><span> { item.last_name + ' ' + item.first_name } <br /></span>
 													<span className="font-weight-bold">SĐT:</span><span> { item.phone_number } <br /></span>
-													<span className="font-weight-bold">Email:</span><span> { item.email } <br /></span>
+													<span className="font-weight-bold">Email:</span><span> { item.email || item?.customer_email } <br /></span>
 												</td>
 												<td className="text-right">{ customNumber( item.price, ',', '₫' ) }</td>
 												<td >

@@ -177,16 +177,47 @@ exports.create = async ( req, res ) =>
 				const sqlUser = `INSERT INTO person 
 				(email, first_name, last_name, password, phone_number, person_type) 
 				VALUES (?, ?, ?, ?, ?, ?)`;
-				
-				db.query( sqlUser, [email, firstName, lastName, password, phoneNumber, body?.person_type || 'Customer'], async ( err, data ) =>
+
+				db.query( sqlUser, [ email, firstName, lastName, password, phoneNumber, body?.person_type || 'Customer' ], async ( err, data ) =>
 				{
 					if ( err ) return buildResponseException( res, 400, err );
-					
+
 					return buildResponse( res, {
 						user: body,
 					} )
 				} );
 
+			}
+		} );
+
+
+	} catch ( e )
+	{
+		return buildResponseException( res, 400, e );
+	}
+};
+exports.deleteById = async ( req, res ) =>
+{
+
+	try
+	{
+		let id = req.params?.id;
+		let sqlId =
+			`DELETE FROM person where email='${ id }' 
+					 `;
+		db.query( sqlId, [], async ( err, data ) =>
+		{
+			console.log( sqlId );
+
+			if ( err )
+			{
+				if ( err ) return buildResponseException( res, 400, err );
+
+			}
+			else
+			{
+
+				return buildResponse( res, {} );
 			}
 		} );
 
