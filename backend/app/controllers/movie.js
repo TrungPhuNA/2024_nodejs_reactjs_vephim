@@ -118,8 +118,7 @@ exports.update = async ( req, res ) =>
 
 
 		let sqlId =
-			`SELECT m.*  FROM movie m  WHERE m.id='${ id }' 
-					 `;
+			`SELECT m.*  FROM movie m  WHERE m.id='${ id }'`;
 		console.log( sqlId );
 		db.query( sqlId, async ( err, data ) =>
 		{

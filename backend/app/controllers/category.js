@@ -62,72 +62,61 @@ exports.update = async ( req, res ) =>
 	try
 	{
 
-		let id = req.params?.id;
-
-
-		let sqlId =
-			`SELECT m.*  FROM movie m  WHERE m.id='${ id }' 
-						 `;
-		console.log( sqlId );
-		db.query( sqlId, async ( err, data ) =>
+		let name = req.body?.genre?.trim();
+		let old_name = req.body?.old_name?.trim();
+		let movie_ids = req.body?.movie_ids;
+		if ( movie_ids != null && movie_ids?.trim() != '' )
 		{
-			if ( err ) return buildResponseException( res, 400, err );
-			if ( data[ 0 ] )
+			let sql = `Delete from movie_genre  where genre='${ old_name }'`;
+			db.query( sql, [], async ( err, data ) =>
 			{
-				let movie = { ...data[ 0 ], ...req?.body };
-				let sqlUpdate =
-					`UPDATE movie SET name='${ movie?.name }', 
-							image_path='${ movie?.image_path }',
-							language='${ movie?.language }',
-							synopsis='${ movie?.synopsis }',
-							rating='${ movie?.rating }',
-							top_cast='${ movie?.top_cast }',
-							release_date='${ movie?.release_date }',
-							duration='${ movie?.duration }' WHERE id='${ id }'
-						 `;
-				console.log( sqlUpdate );
-				db.query( sqlUpdate, async ( err, data ) =>
+
+				if ( err )
 				{
-					if ( err )
+					console.log(err);
+					if ( err ) return buildResponseException( res, 400, err );
+
+				}
+				else
+				{
+					let ids = movie_ids?.split( ',' );
+					let sqlUpdate = `Insert into movie_genre(movie_id,genre) values `;
+					ids?.forEach( ( element, index ) =>
 					{
-						console.log( err );
-						return buildResponseException( res, 400, err );
-					}
+						if ( element?.trim() != '' )
+						{
+							if ( index < ids?.length - 1 )
+							{
+								sqlUpdate += `('${ element?.trim() }', '${name}'), `
+							} else
+							{
+								sqlUpdate += ` ('${ element?.trim() }', '${name}') `
+							}
+						}
+					} );
+					console.log(sqlUpdate);
+					db.query( sqlUpdate, [], async ( err1, data ) =>
+					{
 
-					let directors = movie?.directors?.split( ',' );
-					let genres = movie?.genres?.split( ',' );
+						if ( err1 )
+						{
+							console.log("err------> ", err1);
+							if ( err1 ) return buildResponseException( res, 400, err1 );
 
-					console.log( movie );
-					return buildResponse( res, {
-						movie: movie,
-					} )
-				} );
-			} else
-			{
-				return buildResponseException( res, 400, { message: "Movie doesn't exist" } );
-			}
-
-
-		} );
-		// const sql = `Insert into movie_directors(movie_id,director)
-		// values
-		// (?,?)`;
-
-		//   db.query(sql0, [email, password, "Admin"], (err, data) => {
-		// 	  if (err) return res.json(err);
-
-		// 	  if (data.length === 0) {
-		// 		  return res.status(404).json({message: "Sorry, You are not Admin!"});
-		// 	  }
-
-		// 	  db.query(sql, [movieId, director], (err, data) => {
-		// 		  if (err) return res.json(err);
-
-		// 		  return res.json(data);
-		// 	  });
-		//   });
+						}
+						else
+						{
+							return buildResponse( res, {} );
+						}
+					} );
+				}
+			} );
 
 
+		} else
+		{
+			return buildResponseException( res, 400, { message: "Không tìm thấy danh mục" } );
+		}
 
 	} catch ( e )
 	{
@@ -144,9 +133,10 @@ exports.deleteById = async ( req, res ) =>
 		let movie_ids = req.body?.movie_ids;
 		if ( movie_ids != null && movie_ids?.trim() != '' )
 		{
-			let ids = movie_ids?.split(',')?.map((item) => {
-				return `'${item}'`;
-			})
+			let ids = movie_ids?.split( ',' )?.map( ( item ) =>
+			{
+				return `'${ item }'`;
+			} )
 			let sqlId =
 				`DELETE FROM movie_genre  where movie_id IN (${ ids }) 
 					 `;
@@ -163,8 +153,9 @@ exports.deleteById = async ( req, res ) =>
 					return buildResponse( res, {} );
 				}
 			} );
-		} else {
-			return buildResponseException( res, 400, {message: "Không tìm thấy danh mục"} );
+		} else
+		{
+			return buildResponseException( res, 400, { message: "Không tìm thấy danh mục" } );
 		}
 
 

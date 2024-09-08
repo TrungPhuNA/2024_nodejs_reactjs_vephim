@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from "react";
+import React, { useState } from "react";
 import
 {
 	Table
@@ -14,6 +14,8 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min.js";
 import { DEFAUT_IMG, EMPTY_IMG } from "../../helpers/constant/image.js";
 import { buildImage, onErrorImage } from "../../services/common.js";
 import { DeleteOutlined } from "@ant-design/icons";
+import { CategoryForm } from "./CategoryForm.js";
+
 export const Categories = ( props ) =>
 {
 
@@ -28,8 +30,19 @@ export const Categories = ( props ) =>
 		}
 	}
 
+	const [ isShowModal, setIsShowModal ] = useState( false );
+	const [ detail, setDetail ] = useState( null );
+
 	return (
 		<>
+			<CategoryForm isShowModal={ isShowModal }
+				detail={detail}
+				setIsShowModal={setIsShowModal}
+				setDetail={setDetail}
+				param={props.param}
+				paging={props.paging}
+				getDatasByFilter={ props.getDatasByFilter }
+			/>
 			<Widget>
 				<div className="p-5">
 					{/* <div className="mb-3">
@@ -69,14 +82,20 @@ export const Categories = ( props ) =>
 
 											<td className="text-center">
 												<div className="d-flex justify-content-center align-items-center">
-													{/* <Link to={ `/movie/edit/${ item.id }` } className="d-flex justify-content-center">
-														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
-													</Link> */}
+													<div className="d-flex justify-content-center">
+														<i className="eva eva-edit text-primary" 
+														onClick={() => {
+															setDetail(item);
+															setIsShowModal(true)
+
+														}}
+														style={ { fontSize: "16px", border: "1px solid" } }></i>
+													</div>
 													<DeleteOutlined
 														className="ml-2 cursor-pointer"
 														onClick={ () =>
 														{
-															props.deleteById( {movie_ids: item?.movie_ids} );
+															props.deleteById( { movie_ids: item?.movie_ids } );
 														} }
 														style={ { fontSize: "16px", color: "red" } } />
 

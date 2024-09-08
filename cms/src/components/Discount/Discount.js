@@ -78,13 +78,13 @@ export const Discount = ( props ) =>
 													<Link to={ `/schedule/edit/${ item.id }` } className="d-flex justify-content-center">
 														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
 													</Link>
-													{/* <DeleteOutlined
+													<DeleteOutlined
 														className="ml-2 cursor-pointer"
 														onClick={ () =>
 														{
 															props.deleteById( item.id );
 														} }
-														style={ { fontSize: "16px", color: "red" } } /> */}
+														style={ { fontSize: "16px", color: "red" } } />
 												</div>
 
 											</td>

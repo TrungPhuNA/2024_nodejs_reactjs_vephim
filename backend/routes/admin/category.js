@@ -15,7 +15,7 @@ const isAuth = authMiddleware.roleGuards;
 
 router.get('/category',isAuth, authBuilder.getAll);
 router.post('/category/delete',isAuth, authBuilder.deleteById);
-router.put('/category/update/:id',isAuth, authBuilder.update);
+router.put('/category/update',isAuth, authBuilder.update);
 
 router.get('/statistic',isAuth, dashboard.getAll);
 

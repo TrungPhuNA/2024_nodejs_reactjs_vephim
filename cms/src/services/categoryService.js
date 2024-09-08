@@ -21,9 +21,9 @@ export const Category = {
 		return await postMethod( `/admin/category/store`, data );
 	},
 
-	async update ( id, data )
+	async update (  data )
 	{
-		return await putMethod( `/api/v1/admin/category/update/${ id }`, data );
+		return await putMethod( `/api/v1/admin/category/update`, data );
 	},
 
 	async delete ( data )

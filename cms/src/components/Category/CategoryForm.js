@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Form, Input, Select, Switch, Upload } from 'antd';
+import { Form, Input, message, Modal, Select, Switch, Upload } from 'antd';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import React from 'react';
@@ -9,68 +9,30 @@ import { useForm } from 'antd/lib/form/Form';
 import { toSlug } from '../../helpers/common/common';
 import { PlusOutlined } from '@ant-design/icons';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
-import { showCategoryDetail, submitForms } from '../../services/categoryService';
-import { buildImage } from '../../services/common';
+import { Category, showCategoryDetail, submitForms } from '../../services/categoryService';
+import { buildImage, timeDelay } from '../../services/common';
 import Breadcrumbs from '../Breadbrumbs/Breadcrumbs';
+import { toggleShowLoading } from '../../redux/actions/common';
 export const CategoryForm = ( props ) =>
 {
 	const [ form ] = useForm();
-	const [ status, setStatus ] = useState( [] );
-	const [ files, setFiles ] = useState( [] );
 	const [ data, setData ] = useState( null );
 	const dispatch = useDispatch();
-	const history = useHistory();
-	const params = useParams();
-	const [ id, setId ] = useState( null );
+
 
 	useEffect( () =>
 	{
-		setStatus( [
-			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
-		] );
-	}, [] );
-
-	useEffect( () =>
-	{
-		if ( params.id )
+		if ( props.detail )
 		{
-			setId( Number( params.id ) );
-			getData( Number( params.id ) );
-		}
-	}, [ params.id ] );
-
-
-	useEffect( () =>
-	{
-		if ( data )
-		{
-			let file = [];
-			file.push( {
-				uid: file.length,
-				name: data.avatar,
-				status: 'done',
-				url: buildImage(data.avatar),
-				default: true
-			} );
 			let formValue = {
-				name: data.name,
-				description: data.description,
-				status: data.status || 0,
-				hot: data.hot === 1 ? true : false,
-				slug: data.slug,
-				image: file
+				genre: props.detail?.genre,
+				movie_ids: props.detail?.movie_ids
 			}
-			setFiles(file)
+
 			form.setFieldsValue( formValue )
 
 		}
-	}, [ data ] )
-
-	const getData = async ( id ) =>
-	{
-		await showCategoryDetail( id, setData );
-	}
+	}, [ props.detail ] )
 
 	const validateMessages = {
 		required: '${label} không được để trống!',
@@ -85,7 +47,37 @@ export const CategoryForm = ( props ) =>
 
 	const submitForm = async ( e ) =>
 	{
-		await submitForms( id, files, e, dispatch, history );
+		let data = {
+			...props.detail,
+			old_name: props?.detail?.genre,
+			genre: e?.genre
+		}
+		dispatch( toggleShowLoading( true ) );
+		const response = await Category.update(  data );
+		dispatch( toggleShowLoading( false ) );
+		if ( response?.status === 'success' )
+		{
+			message.success( `Cập nhật thành công!` );
+			await timeDelay( 500 );
+			props.setIsShowModal( false );
+			props.setDetail( null );
+			props.getDatasByFilter( { ...props.params, ...props.paging } )
+		} else if ( response?.status === 'fail' && response?.data )
+		{
+			let error = Object.entries( response?.data ) || [];
+			if ( error.length > 0 )
+			{
+				let messageError = error.reduce( ( newMessage, item ) =>
+				{
+					newMessage[ `${ item[ 0 ] }` ] = item[ 1 ][ 0 ];
+					return newMessage
+				}, {} );
+				message.error( messageError )
+			}
+		} else
+		{
+			message.error( response.message || 'Error! Please try again' );
+		}
 	}
 
 	const resetForm = () =>
@@ -115,29 +107,23 @@ export const CategoryForm = ( props ) =>
 		if ( e?.fileList )
 		{
 			let fileChoose = e?.fileList;
-			setFiles( fileChoose );
 		}
 		return e?.fileList;
 	}
 
-	const routes = [
-		{
-			name: 'Danh mục',
-			route: '/category/list'
-		},
-		{
-			name: id ? 'Cập nhật' : 'Tạo mới',
-			route:''
-		}
-	]
-
 	return (
 		<>
-		<Breadcrumbs routes={routes} title={"Danh mục"} />
-		<div className="w-75 mx-auto">
-			<Widget>
+			<Modal title="Cập nhật danh mục"
+				open={ props.isShowModal } centered
+				onCancel={ () =>
+				{
+					props.setIsShowModal( false );
+					props.setDetail( null );
+				} }
+				footer={null} 
+
+			>
 				<Form
-					className='p-3'
 					name='nest-messages form'
 					form={ form }
 					onFinish={ submitForm }
@@ -145,69 +131,22 @@ export const CategoryForm = ( props ) =>
 					validateMessages={ validateMessages }
 				>
 					<div className='mb-3'>
-						<Form.Item name="name" label="Tên danh mục"
+						<Form.Item name="genre" label="Tên danh mục"
 							rules={ [ { required: true } ] }
 							className=' d-block'>
 							<Input className='form-control' placeholder='Nhập dữ liệu' />
 						</Form.Item>
-
-						<Form.Item name="slug" label="Slug"
-							rules={ [ { required: true } ] }
-							className=' d-block'>
-							<Input className='form-control' placeholder='Nhập dữ liệu' />
-						</Form.Item>
-						<Form.Item
-							label="Avatar"
-							name="image"
-							accept="images/**"
-							className='d-block'
-							valuePropName="fileList"
-							fileList={ files }
-							getValueFromEvent={ normFile }
-						>
-							<Upload action="/upload" listType="picture-card">
-								{ files.length < 1 && <div>
-									<PlusOutlined />
-									<div style={ { marginTop: 8 } }>Upload</div>
-								</div> }
-							</Upload>
-						</Form.Item>
-
-						<Form.Item name="description" label="Mô tả chi tiết"
-
-							className='d-block'>
-							<Input.TextArea className='form-control'
-								placeholder='Nhập mô tả' cols={ 10 } rows={ 5 } />
-						</Form.Item>
-						<Form.Item name="status" label="Trạng thái"
-							rules={ [ { required: true } ] } className='d-block'>
-							<Select
-								placeholder="Chọn trạng thái"
-								style={ { width: '100%' } }
-								options={ status }
-							/>
-						</Form.Item>
-
-						{/* <Form.Item name="hot" label="Is hot?" valuePropName="checked">
-							<Switch />
-						</Form.Item> */}
-
 					</div>
-
 					<div className='d-flex justify-content-center'>
+						
 						<button type="submit" className="btn btn-primary text-center" style={ { marginRight: 10, padding: '10px 10px' } }>
-							{ !id && 'Tạo mới' || 'Cập nhật' }
+							{ 'Cập nhật' }
 						</button>
-
-						{ !id && <button type="button" className="btn btn-secondary text-center" style={ { marginLeft: 10, padding: '10px 10px' } } onClick={ resetForm }>
-							Reset
-						</button> }
 					</div>
 				</Form>
-			</Widget >
-		</div>
+			</Modal>
 		</>
-		
+
 
 	)
 }
