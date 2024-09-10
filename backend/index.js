@@ -60,7 +60,7 @@ app.use('/api/v1/admin', initRouterAdmin);
 
 app.get("/latestMovies", (req, res) => {
     const sql =
-        "SELECT m.id, m.name, m.image_path, m.rating, m.duration, m.release_date as release_date, GROUP_CONCAT(g.genre SEPARATOR ', ') as genres FROM movie m INNER JOIN movie_genre g ON m.id = g.movie_id GROUP BY m.id ORDER BY release_date DESC LIMIT 6";
+        "SELECT m.id, m.name, m.image_path, m.rating, m.duration, m.release_date as release_date, GROUP_CONCAT(g.genre SEPARATOR ', ') as genres FROM movie m INNER JOIN movie_genre g ON m.id = g.movie_id WHERE m.is_deleted != 1  GROUP BY m.id ORDER BY release_date DESC LIMIT 6";
 
     db.query(sql, (err, data) => {
         if (err) return res.json(err);
@@ -172,7 +172,7 @@ app.post("/uniqueMovies", (req, res) => {
     const showtimeDate = req.body.userDate;
 
     const sql =
-        "SELECT DISTINCT M.id,M.duration, M.name AS movie_name, M.image_path FROM movie M JOIN shown_in SI ON M.id = SI.movie_id JOIN showtimes S ON SI.showtime_id = S.id JOIN hall H ON SI.hall_id = H.id WHERE H.theatre_id = ? AND S.showtime_date = ?";
+        "SELECT DISTINCT M.id,M.duration, M.name AS movie_name, M.image_path FROM movie M JOIN shown_in SI ON M.id = SI.movie_id JOIN showtimes S ON SI.showtime_id = S.id JOIN hall H ON SI.hall_id = H.id WHERE M.is_deleted != 1 AND H.theatre_id = ? AND S.showtime_date = ?";
 
     db.query(sql, [theatreId, showtimeDate], (err, data) => {
         if (err) return res.json(err);
@@ -376,7 +376,7 @@ app.post("/otherMovies", (req, res) => {
     const movieId = req.body.movieDetailsId;
 
     sql =
-        "SELECT m.id, m.name, m.image_path, m.rating, m.duration, m.release_date as release_date, GROUP_CONCAT(g.genre SEPARATOR ', ') as genres FROM movie m INNER JOIN movie_genre g ON m.id = g.movie_id GROUP BY m.id HAVING m.id!=?";
+        "SELECT m.id, m.name, m.image_path, m.rating, m.duration, m.release_date as release_date, GROUP_CONCAT(g.genre SEPARATOR ', ') as genres FROM movie m INNER JOIN movie_genre g ON m.id = g.movie_id where m.is_deleted != 1 GROUP BY m.id HAVING m.id!=?";
 
     db.query(sql, [movieId], (err, data) => {
         if (err) return res.json(err);
@@ -745,7 +745,7 @@ app.post("/movieReplaceTo", (req, res) => {
 
     const showtimeId = req.body.selectedShowtime;
 
-    const sql = `SELECT name, id FROM movie WHERE id NOT IN ( SELECT DISTINCT M.id FROM shown_in Sh JOIN movie M ON Sh.movie_id = M.id WHERE Sh.showtime_id = ? )`;
+    const sql = `SELECT name, id FROM movie WHERE is_deleted != 1 AND id NOT IN ( SELECT DISTINCT M.id FROM shown_in Sh JOIN movie M ON Sh.movie_id = M.id WHERE Sh.showtime_id = ? )`;
 
     db.query(sql0, [email, password, "Admin"], (err, data) => {
         if (err) return res.json(err);
