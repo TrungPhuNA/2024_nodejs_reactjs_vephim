@@ -11,22 +11,36 @@ import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min
 import { toggleShowLoading } from '../../redux/actions/common';
 import { DiscountService, submitDiscountForm } from '../../services/discountService';
 import Breadcrumbs from '../Breadbrumbs/Breadcrumbs';
+import { getDataByFilter } from '../../services/slideService';
+import { getProducts } from '../../services/productService';
+import { DeleteOutlined } from '@ant-design/icons';
 export const DiscountForm = ( props ) =>
 {
 	const [ form ] = useForm();
 	const [ status, setStatus ] = useState( [] );
+	const [ rooms, setRooms ] = useState( [] );
+	const [ movies, setMovies ] = useState( [] );
 	const [ data, setData ] = useState( null );
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const params = useParams();
 	const [ id, setId ] = useState( null );
+	const [ dataMovie, setDataMovie ] = useState( [
+		{
+			hall_id: null,
+			movie_id: null
+		}
+	] )
 
 	useEffect( () =>
 	{
-		setStatus([
+		setStatus( [
 			{ value: "3D", label: "3D" },
 			{ value: "2D", label: "2D" }
 		] );
+
+		getListProducts();
+		getListRoom();
 	}, [] );
 
 	useEffect( () =>
@@ -49,11 +63,14 @@ export const DiscountForm = ( props ) =>
 				movie_start_time: data.movie_start_time,
 				show_type: data.show_type,
 				status: data.status,
-				showtime_date: data.showtime_date ? customDate(data.showtime_date, 'yyyy-MM-DD') : null,
+
+				showtime_date: data.showtime_date ? customDate( data.showtime_date, 'yyyy-MM-DD' ) : null,
 				price_per_seat: data.price_per_seat || 0,
 			}
-			console.log(formValue);
-			form.setFieldsValue( formValue )
+			console.log( formValue );
+			form.setFieldsValue( formValue );
+
+			setDataMovie(data?.data_movies)
 
 		}
 	}, [ data ] )
@@ -63,7 +80,7 @@ export const DiscountForm = ( props ) =>
 		try
 		{
 			dispatch( toggleShowLoading( true ) );
-			
+
 			const response = await DiscountService.show( id );
 			if ( response?.status === 'success' )
 			{
@@ -89,7 +106,9 @@ export const DiscountForm = ( props ) =>
 
 	const submitForm = async ( e ) =>
 	{
-		await submitDiscountForm( id, e, dispatch, history );
+		let data = { ...e };
+		data.data_movies = dataMovie;
+		await submitDiscountForm( id, data, dispatch, history );
 	}
 
 	const resetForm = () =>
@@ -110,6 +129,37 @@ export const DiscountForm = ( props ) =>
 				[ String( e[ 0 ].name[ 0 ] ) ]: value
 			}
 			form.setFieldsValue( fieldValue );
+		}
+	}
+
+	const getListRoom = async () =>
+	{
+		const rs = await getDataByFilter( { page: 1, page_size: 10000000 }, dispatch );
+		dispatch( toggleShowLoading( false ) );
+		if ( rs )
+		{
+			let data = rs?.rooms?.map( ( item ) =>
+			{
+				item.value = item.id;
+				item.label = item.name;
+				return item;
+			} )
+			setRooms( data );
+		}
+	}
+
+	const getListProducts = async () =>
+	{
+		const rs = await getProducts( { page: 1, page_size: 10000000 } );
+		if ( rs?.status == 'success' )
+		{
+			let data = rs?.data?.products?.map( ( item ) =>
+			{
+				item.value = item.id;
+				item.label = item.name;
+				return item;
+			} )
+			setMovies( data );
 		}
 	}
 	const routes = [
@@ -145,7 +195,7 @@ export const DiscountForm = ( props ) =>
 
 							<div className='row'>
 								<div className='col-12 col-md-6'>
-									<Form.Item  name="showtime_date" label="Ngày chiếu"
+									<Form.Item name="showtime_date" label="Ngày chiếu"
 										rules={ [ { required: true } ] }
 										className=' d-block'>
 										<Input type='date' className='form-control' placeholder='Nhập mã' />
@@ -159,8 +209,6 @@ export const DiscountForm = ( props ) =>
 									</Form.Item>
 								</div>
 
-								
-
 								<div className='col-12 col-md-6'>
 									<Form.Item name="show_type" label="Thể loại"
 										rules={ [ { required: true } ] } className='d-block'>
@@ -171,6 +219,95 @@ export const DiscountForm = ( props ) =>
 										/>
 									</Form.Item>
 								</div>
+
+							</div>
+							<div>
+								<h5>Chọn phim và rạp</h5>
+								{ dataMovie?.map( ( item, index ) =>
+								{
+									return <div className='row ' key={ index }>
+										<div className='col-sm-5 col-12'>
+											<Form.Item label="Tên rạp" className='d-block'>
+												<Select
+													placeholder="Chọn giá trị"
+													showSearch
+													value={item.hall_id}
+													filterOption={ ( input, option ) => ( option?.label?.toLowerCase() ).includes( input?.toLowerCase() ) }
+													onChange={ ( value ) =>
+													{
+														console.log( value );
+														let newOptions = dataMovie.map( ( e, i ) =>
+														{
+															if ( index == i )
+															{
+																e.hall_id = value;
+															}
+															return e;
+														} );
+														setDataMovie( newOptions )
+													} }
+													style={ { width: '100%' } }
+													options={ rooms }
+												/>
+											</Form.Item>
+										</div>
+										<div className='col-sm-5 col-12'>
+											<Form.Item label="Phim" className='d-block'>
+												<Select
+													placeholder="Chọn giá trị"
+													showSearch
+													value={item.movie_id}
+													onChange={ ( value ) =>
+													{
+														console.log( value );
+														let newOptions = dataMovie.map( ( e, i ) =>
+														{
+															if ( index == i )
+															{
+																e.movie_id = value;
+															}
+															return e;
+														} );
+														setDataMovie( newOptions )
+													} }
+													filterOption={ ( input, option ) => ( option?.label?.toLowerCase() ).includes( input?.toLowerCase() ) }
+													style={ { width: '100%' } }
+													options={ movies }
+												/>
+											</Form.Item>
+										</div>
+										<div className='col-1 d-flex align-items-end'>
+											<Form.Item label="" className='d-block'>
+												<DeleteOutlined
+													className="ml-2 cursor-pointer"
+													onClick={ () =>
+													{
+														console.log( "data-------> ", dataMovie );
+														let newOptions = dataMovie.filter( ( e, i ) => i != index );
+														console.log( "new", newOptions );
+														setDataMovie( newOptions )
+													} }
+													style={ { fontSize: "16px", color: "red" } } />
+											</Form.Item>
+
+										</div>
+
+									</div>
+								} )
+								}
+								<button type='button' className='btn btn-outline-primary d-flex align-items-center'
+
+									onClick={ () =>
+									{
+										let newOptions = dataMovie.map( ( item ) => item );
+										newOptions.push( {
+											movie_id: null,
+											hall_id: null
+										} );
+										setDataMovie( newOptions );
+									} }>
+									<i className="eva eva-plus" style={ { fontSize: '18px' } }></i>
+								</button>
 							</div>
 						</div>
 

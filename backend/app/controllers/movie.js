@@ -168,26 +168,7 @@ exports.update = async ( req, res ) =>
 
 
 		} );
-		// const sql = `Insert into movie_directors(movie_id,director)
-		// values
-		// (?,?)`;
-
-		//   db.query(sql0, [email, password, "Admin"], (err, data) => {
-		// 	  if (err) return res.json(err);
-
-		// 	  if (data.length === 0) {
-		// 		  return res.status(404).json({message: "Sorry, You are not Admin!"});
-		// 	  }
-
-		// 	  db.query(sql, [movieId, director], (err, data) => {
-		// 		  if (err) return res.json(err);
-
-		// 		  return res.json(data);
-		// 	  });
-		//   });
-
-
-
+		
 	} catch ( e )
 	{
 		return buildResponseException( res, 400, e );

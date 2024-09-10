@@ -6,7 +6,7 @@ const sign = promisify( jwt.sign ).bind( jwt );
 
 const { buildResponseException, buildResponse, buildParamPaging } = require( "../common/common" );
 const db = require( "../database/database" );
-const movieService = require( "../services/movie" );
+const scheduleService = require( "../services/schedule" );
 
 
 
@@ -86,19 +86,36 @@ exports.show = async ( req, res ) =>
 		console.log( sql );
 		db.query( sql, async ( err, data ) =>
 		{
-			if ( err ) {
-				console.log(err);
+			if ( err )
+			{
+				console.log( err );
 				return buildResponseException( res, 400, err );
 			}
+			let sql2 =
+				`SELECT movie_id, hall_id FROM shown_in WHERE showtime_id='${ id }' 
+			 `;
+			console.log( sql2 );
+			db.query( sql2, async ( err, data1 ) =>
+			{
+				if ( err )
+				{
+					console.log( err );
+					return buildResponseException( res, 400, err );
+				}
 
-			return buildResponse( res, data[ 0 ] )
+				let movies = { ...data[ 0 ], data_movies: data1 };
+
+				return buildResponse( res, movies )
+
+			} );
+
 
 		} );
 
 
 	} catch ( e )
 	{
-		console.log(e);
+		console.log( e );
 		return buildResponseException( res, 400, e );
 	}
 };
@@ -108,7 +125,6 @@ exports.update = async ( req, res ) =>
 
 	try
 	{
-
 		let id = req.params?.id;
 
 
@@ -129,7 +145,6 @@ exports.update = async ( req, res ) =>
 						price_per_seat='${ movie?.price_per_seat }'
 						 WHERE id='${ id }'
 					 `;
-				console.log( sqlUpdate );
 				db.query( sqlUpdate, async ( err, data ) =>
 				{
 					if ( err )
@@ -137,8 +152,12 @@ exports.update = async ( req, res ) =>
 						console.log( err );
 						return buildResponseException( res, 400, err );
 					}
-
-					
+					let movies = req.body.data_movies || []
+					if ( movies?.length > 0 )
+					{
+						console.log( "movie---------> ", movie );
+						await scheduleService.createShowIn( id, movies )
+					}
 					return buildResponse( res, {
 						movie: movie,
 					} )
@@ -150,7 +169,7 @@ exports.update = async ( req, res ) =>
 
 
 		} );
-		
+
 
 
 	} catch ( e )
@@ -182,7 +201,7 @@ exports.create = async ( req, res ) =>
 				show_type,
 				showtime_date,
 				price_per_seat
-				
+
 			],
 			( err1, data1 ) =>
 			{
@@ -191,10 +210,16 @@ exports.create = async ( req, res ) =>
 				db.query( sql2, async ( err2, data2 ) =>
 				{
 					if ( err2 ) return buildResponseException( res, 400, err2 );
+					let movies = req.body?.data_movies
+					if ( movies?.length > 0 )
+					{
+						console.log( "movie---------> ", movies );
+						await scheduleService.createShowIn( data2[ 0 ]?.last_id, movies )
+					}
 					return buildResponse( res, {
 						product: data2[ 0 ],
 					} );
-					
+
 				} );
 			}
 		);
@@ -208,32 +233,33 @@ exports.create = async ( req, res ) =>
 
 
 exports.deleteById = async ( req, res ) =>
+{
+
+	try
 	{
-	
-		try
-		{
-			let id = req.params?.id;
-			let sqlId =
-				`DELETE FROM showtimes where id='${ id }' 
+		let id = req.params?.id;
+		let sqlId =
+			`DELETE FROM showtimes where id='${ id }' 
 					 `;
-			db.query( sqlId, [], async ( err, data ) =>
-			{
-				console.log( sqlId );
-	
-				if ( err )
-				{
-					if ( err ) return buildResponseException( res, 400, err );
-	
-				}
-				else {
-	
-					return buildResponse( res, {} );
-				}
-			} );
-	
-	
-		} catch ( e )
+		db.query( sqlId, [], async ( err, data ) =>
 		{
-			return buildResponseException( res, 400, e );
-		}
-	};
+			console.log( sqlId );
+
+			if ( err )
+			{
+				if ( err ) return buildResponseException( res, 400, err );
+
+			}
+			else
+			{
+
+				return buildResponse( res, {} );
+			}
+		} );
+
+
+	} catch ( e )
+	{
+		return buildResponseException( res, 400, e );
+	}
+};

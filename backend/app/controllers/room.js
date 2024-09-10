@@ -138,10 +138,6 @@ exports.update = async ( req, res ) =>
 
 
 		} );
-
-
-
-
 	} catch ( e )
 	{
 		return buildResponseException( res, 400, e );
@@ -278,3 +274,4 @@ exports.deleteById = async ( req, res ) =>
 		return buildResponseException( res, 400, e );
 	}
 };
+

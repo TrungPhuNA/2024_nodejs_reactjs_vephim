@@ -62,11 +62,20 @@ export const SlideForm = ( props ) =>
 		const response = await SlideService.getListTheatres({page: 1, page_size:10000});
 		console.log(response);
 		if(response?.status == 'success') {
-			let data =response?.data?.theatres?.map((item) => {
-				item.value = item.id;
-				item.label = item.name;
-				return item;
-			});
+			let data =response?.data?.theatres?.reduce((newItem, item) => {
+				
+				let obj = {
+					value: item.id,
+					label: item.name,
+				}
+				let check = newItem?.filter((e) => e?.value == item.id) || [];
+				console.log("check--------<", check);
+				if(check?.length < 1 ) {
+					newItem.push(obj);
+				}
+				return newItem;
+			}, []);
+			console.log(data);
 			setListData(data);
 		}
 	}
