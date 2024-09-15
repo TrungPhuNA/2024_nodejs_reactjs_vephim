@@ -146,7 +146,7 @@ exports.update = async ( req, res ) =>
 					}
 
 					let directors = movie?.directors?.split( ',' );
-					let genres = movie?.genres?.split( ',' );
+					let genres = movie?.genre?.split( ',' );
 					if ( directors?.length > 0 )
 					{
 						await movieService.createDirector( req, res, id )
@@ -168,7 +168,7 @@ exports.update = async ( req, res ) =>
 
 
 		} );
-		
+
 	} catch ( e )
 	{
 		return buildResponseException( res, 400, e );
@@ -216,12 +216,12 @@ exports.create = async ( req, res ) =>
 					if ( data2[ 0 ]?.last_id )
 					{
 						let directors = req?.body?.directors?.split( ',' );
-						let genres = req?.body?.genres?.split( ',' );
+						let genres = req?.body?.genre?.split( ',' );
 						if ( directors?.length > 0 )
 						{
 							await movieService.createDirector( req, res, data2[ 0 ]?.last_id )
 						}
-						console.log( genres );
+						console.log( '----- create : ', genres );
 						if ( genres?.length > 0 )
 						{
 							await movieService.createGenre( req, res, data2[ 0 ]?.last_id )
@@ -250,10 +250,10 @@ exports.create = async ( req, res ) =>
 // 		let id = req.params?.id;
 // 		let sqlId =
 // 			`
-// 			DELETE FROM ticket where movie_id='${ id }'; 
-// 			DELETE FROM movie_genre where movie_id='${ id }'; 
-// 			DELETE FROM movie_directors where movie_id='${ id }'; 
-// 			DELETE FROM show_in where movie_id='${ id }'; 
+// 			DELETE FROM ticket where movie_id='${ id }';
+// 			DELETE FROM movie_genre where movie_id='${ id }';
+// 			DELETE FROM movie_directors where movie_id='${ id }';
+// 			DELETE FROM show_in where movie_id='${ id }';
 // 			DELETE FROM movie where id='${ id }';
 // 				 `;
 // 		db.beginTransaction( ( err ) =>

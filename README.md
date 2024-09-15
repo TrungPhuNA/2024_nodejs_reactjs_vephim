@@ -88,8 +88,7 @@
     name: Tên rạp chiếu.
     location: Địa điểm rạp chiếu phim.
     location_details: Chi tiết về địa điểm rạp chiếu.
-13. ticket
-    Chứa thông tin về vé đã mua.
+13. ticket => Chứa thông tin về vé đã mua.
     Các trường:
     id: ID vé.
     price: Giá vé.
