@@ -294,7 +294,7 @@ exports.createGenre = async ( req, res, id ) =>
 
 	try
 	{
-		let directors = req?.body?.genres?.split(',');
+		let directors = req?.body?.genre?.split(',');
 		let sqlId =
 			`DELETE FROM movie_genre where movie_id='${ id }' 
 					 `;
